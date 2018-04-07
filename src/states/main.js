@@ -1,6 +1,7 @@
 import game from '../game';
 import { Hider, ControlledHider, WanderingHider } from '../objects/hider';
 import { Sand } from '../objects/sand';
+import { Cactus } from '../objects/cactus';
 import { glassWidth, glassHeight, sandPos } from '../util/math';
 
 export class MainState extends Phaser.State {
@@ -11,6 +12,7 @@ export class MainState extends Phaser.State {
 		game.timer = 0.5;
 		this.sand = new Sand();
 		this.hider = new ControlledHider();
+		this.cacti = [ new Cactus() , new Cactus() , new Cactus() ];
 	}
 
 	update() {
