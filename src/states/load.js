@@ -10,6 +10,6 @@ export class LoadState extends Phaser.State {
         game.scale.windowConstraints.bottom = 'layout';
         game.scale.pageAlignHorizontally = true;
         game.scale.pageAlignVertically = true;
-        game.state.start('main');
+        game.state.start('title');
     }
 }
