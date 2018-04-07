@@ -3,6 +3,7 @@ import game from '../game';
 export class LoadState extends Phaser.State {
     preload() {
         game.load.image('sand-particle', 'img/sand-particle.png');
+        game.load.image('chest', 'img/chest.png');
     }
 
     create() {
