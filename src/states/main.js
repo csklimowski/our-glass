@@ -30,8 +30,12 @@ export class MainState extends Phaser.State {
 		g.add(this.hider);
 		this.anchor = new Anchor(this.onAnchorLand, this);
 		g.add(this.anchor);
-		g.add(new WanderingHider());
+		let wander = new WanderingHider();
+		g.add(wander);
 		this.group = g;
+
+		this.wanders = game.add.group();
+		this.wanders.add(wander);
 
 		g.pivot.set(game.width/2, 1.5*game.height);
 		g.x = game.width/2;
@@ -76,7 +80,9 @@ export class MainState extends Phaser.State {
 		let g = this.group;
 		this.spawnClock -= dt;
 		if (this.spawnClock < 0) {
-			g.add(new WanderingHider());
+			let wander = new WanderingHider();
+			g.add(wander);
+			this.wanders.add(wander);
 			this.spawnClock = 1.0 + Math.random()*0.5;
 		}
 
@@ -144,6 +150,12 @@ export class MainState extends Phaser.State {
 			}, this);
 			game.sfx.hit_chest.play();
 		} else {
+			for (let w of this.wanders.getAll()) {
+				let distance = Math.sqrt(Math.pow(this.anchor.px - w.px, 2) + Math.pow(this.anchor.py - w.py, 2));
+				if(distance < 100){
+
+				}
+			}
 			game.time.events.add(1000, function() {
 				this.anchor.state = RISING;
 			}, this);
