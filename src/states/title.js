@@ -6,7 +6,11 @@ export class TitleState extends Phaser.State{
     }
 
     create() {
-        game.state.backgroundColor = 0x000000;
+        game.add.image(0, 0, 'grad1');
+
+        new TitleLeft();
+        new TitleRight();
+        new TitleMiddle();
 
         let text = game.add.text(game.width/2, game.height/2, "Play", { font: 'normal 40px Serif', fill: '#FFFFFF' });
         text.inputEnabled = true;
@@ -31,5 +35,53 @@ export class TitleState extends Phaser.State{
             game.state.start('main');
         });
 
+    }
+}
+
+class TitleLeft extends Phaser.Sprite{
+    constructor(){
+        super(game, 0, 0, 'left');
+        game.add.existing(this);
+
+        this.scale.set(1.25);
+        this.anchor.set(0.5, 1);
+
+        this.x = 130;
+        this.y = game.height;
+
+        this.animations.add('left', _.range(60), 30, true);
+        this.animations.play('left');
+    }
+}
+
+class TitleRight extends Phaser.Sprite{
+    constructor(){
+        super(game, 0, 0, 'right');
+        game.add.existing(this);
+
+        this.scale.set(1.25);
+        this.anchor.set(0.5, 1);
+
+        this.x = game.width - 130;
+        this.y = game.height;
+
+        this.animations.add('right', _.range(60), 30, true);
+        this.animations.play('right');
+    }
+}
+
+class TitleMiddle extends Phaser.Sprite{
+    constructor(){
+        super(game, 0, 0, 'middle');
+        game.add.existing(this);
+
+        this.scale.set(1.5);
+        this.anchor.set(0.5);
+
+        this.x = game.width/2;
+        this.y = 150;
+
+        this.animations.add('middle', _.range(60), 30, true);
+        this.animations.play('middle');
     }
 }

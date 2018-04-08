@@ -8,12 +8,18 @@ export class LoadState extends Phaser.State {
         game.load.image('light-sand-particle', 'img/light-sand-particle.png');
         game.load.image('hourglass', 'img/sprites/hourglass.png');
         game.load.image('grad5', 'img/sprites/gradient5.png');
+        game.load.image('grad1', 'img/sprites/gradient1.png');
+        game.load.image('grad2', 'img/sprites/gradient2.png');
+        game.load.image('grad3', 'img/sprites/gradient3.png');
         game.load.spritesheet('swayblue', 'img/sprites/swayblue.png', 150, 150);
         game.load.spritesheet('sway', 'img/sprites/sway.png', 150, 150);
         game.load.spritesheet('cactus_dance', 'img/sprites/cactus_dance.png', 140, 150);
         game.load.spritesheet('cactus_fall', 'img/sprites/cactus_fall.png', 128, 149);
         game.load.spritesheet('outofsand', 'img/sprites/outofsand.png', 150, 150);
         game.load.spritesheet('bug', 'img/sprites/bug.png', 120, 120);
+        game.load.spritesheet('left', 'img/sprites/titleleft.png', 231, 355);
+        game.load.spritesheet('right', 'img/sprites/titleright.png', 231, 355);
+        game.load.spritesheet('middle', 'img/sprites/titlemid.png', 211, 186);
         game.load.audio('hit_chest','audio/anchor_hit_chest.ogg');
         game.load.audio('hit_glass','audio/anchor_hit_glass.ogg');
         game.load.audio('hit_ground','audio/anchor_hit_ground.ogg');

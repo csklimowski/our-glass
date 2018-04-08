@@ -7,7 +7,7 @@ export class ControlState extends Phaser.State {
     }
 
     create() {
-        game.state.backgroundColor = 0x000000;
+        game.add.image(0, 0, 'grad1');
         
         let text = game.add.text(game.width/2, game.height/2, "W or UpArrow: Up\nA or LeftArrow: Left\nS or DownArrow: Down\nD or RightArrow: Right\n Q or /: Drop Anchor", { font: 'normal 40px Serif', fill: '#FFFFFF' });
         text.anchor.x = 0.5;
