@@ -11,7 +11,7 @@ export class Anchor extends Phaser.Sprite {
         super(game, 0, 0, 'anchor');
         this.shadow = game.add.graphics(0, 0);
         game.add.existing(this);
-
+        
         let particles = game.add.emitter();
 		particles.makeParticles('sand-particle');
 		particles.width = 60;
@@ -22,6 +22,7 @@ export class Anchor extends Phaser.Sprite {
         particles.setYSpeed(-200, -300);
         particles.gravity = 700;
         this.exploder = particles;
+        this.addChild(particles);
 
         let lizard = game.add.sprite(0, 0, 'sway');
         lizard.animations.add('sway', _.range(60), 30, true);
@@ -145,8 +146,6 @@ export class Anchor extends Phaser.Sprite {
         if (this.state == DROPPING) {
             this.altitude = Math.min(this.altitude + 1000*dt, sandPos(game.timer));
             if (this.altitude == sandPos(game.timer)) {
-                this.exploder.x = this.x;
-                this.exploder.y = this.y; 
                 if (distFromCenter < glassWidth(game.timer)) {
                     this.exploder.start(true, 800, null, 20);
                     this.state = DROPPED;
