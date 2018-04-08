@@ -14,11 +14,19 @@ export class MainState extends Phaser.State {
 		this.hider = new ControlledHider();
 		new WanderingHider();
 		this.cacti = [ new Cactus() , new Cactus() , new Cactus() ];
+		this.spawnClock = Math.random();
 	}
 
 	update() {
 		let dt = game.time.elapsedMS / 1000;
 		game.timer += dt / 40;
+
+		this.spawnClock -= dt;
+		if (this.spawnClock < 0) {
+			new WanderingHider();
+			this.spawnClock = 0.5 + Math.random()*0.5;
+		}
+
 
 		// let h = this.hider;
 		// let s = this.sand;

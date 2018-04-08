@@ -8,19 +8,22 @@ export class Hider extends Phaser.Sprite {
 
         this.x  = 0; // position to draw
         this.y  = 0; 
+
         this.px = 0; // actual position
         this.py = 0;
+
         this.vx = 0; // velocity
         this.vy = 0;
+
         this.ax = 0; // acceleration
         this.ay = 0;
+
         this.tx = 0; // target to follow
         this.ty = 0;
 
-        this.scale.set(0.5);
-
         this.speed = 200;
 
+        this.scale.set(0);
         this.anchor.set(0.5);
 
         let particles = game.add.emitter(0, 0);
@@ -70,28 +73,54 @@ export class Hider extends Phaser.Sprite {
         this.particles.x = this.x;
         this.particles.y = sandPos(game.timer) + this.py*0.25;
     }
+
+    destroy() {
+        this.particles.destroy();
+        super.destroy();
+    }
 }
 
 export class WanderingHider extends Hider {
     constructor() {
         super();
+        // pick random position
+        let angleToCenter = Math.random()*2*Math.PI;
+        let distFromCenter = Math.random()*glassWidth(game.timer);
+        this.py = Math.sin(angleToCenter)*distFromCenter;
+        this.px = Math.cos(angleToCenter)*distFromCenter;
+        // pick random starting angle
+        let targetAngle = Math.random()*2*Math.PI;
+        this.ty = Math.sin(targetAngle);
+        this.tx = Math.cos(targetAngle);
+        // pick random lifespan
+        this.lifetime = 0.5 + Math.random()*2;
     }
 
     update() {
         let dt = game.time.elapsedMS / 1000;
-        
-        let targetAngle = Math.atan2(this.ty, this.tx);
-        targetAngle += (Math.random()*10*Math.PI - 5*Math.PI)*dt;
-        
-        let futureDist = Math.sqrt((this.px+this.vx)*(this.px+this.vx) + (this.py+this.vy)*(this.py+this.vy));
-        let sandRadius = glassWidth(game.timer);
-        if (sandRadius - futureDist < -100) {
-            console.log('hello');
-            targetAngle += Math.PI;
+
+        this.lifetime -= dt;
+        if (this.lifetime < 0) {
+            // die completely
+            this.destroy();
+        } else if (this.lifetime < 0.3) {
+            // stop moving before death to let particles finish
+            this.tx = 0;
+            this.ty = 0;
+        } else {
+            // change target position randomly and polar-ly
+            let targetAngle = Math.atan2(this.ty, this.tx);
+            targetAngle += (Math.random()*10*Math.PI - 5*Math.PI)*dt;
+            // avoid boundaries
+            let futureDist = Math.sqrt((this.px+this.vx)*(this.px+this.vx) + (this.py+this.vy)*(this.py+this.vy));
+            let sandRadius = glassWidth(game.timer);
+            if (sandRadius - futureDist < -120) {
+                targetAngle += Math.PI;
+            }
+
+            this.ty = Math.sin(targetAngle);
+            this.tx = Math.cos(targetAngle);
         }
-        
-        this.ty = Math.sin(targetAngle);
-        this.tx = Math.cos(targetAngle);
 
         super.update();
     }
@@ -110,7 +139,7 @@ export class ControlledHider extends Hider {
     }
 
     update() {
-        
+
         if (this.keys.left.isDown && this.keys.right.isDown) {
             this.tx = 0;
         } else if (this.keys.left.isDown) {
