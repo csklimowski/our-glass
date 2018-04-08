@@ -6,7 +6,7 @@ export const FOUND = 1;
 
 export class Hider extends Phaser.Sprite {
     constructor() {
-        super(game, 0, 0, 'chest');
+        super(game, 0, 0, 'outofsand', 19);
         game.add.existing(this);
 
         this.x  = 0; // position to draw
@@ -27,8 +27,6 @@ export class Hider extends Phaser.Sprite {
         this.speed = 200;
         this.state = MOVING;
 
-        this.scale.set(0);
-        this.rotation = Math.PI/2;
         this.anchor.set(0.5);
 
         let particles = game.add.emitter();
@@ -73,7 +71,7 @@ export class Hider extends Phaser.Sprite {
         }
         // update sprite position
         this.x = game.width/2 + this.px;
-        this.y = game.height/2 + this.py;
+        this.y = sandPos(game.timer) + this.py*0.25;
         // update particle position
         this.particles.x = this.x;
         this.particles.y = sandPos(game.timer) + this.py*0.25;
@@ -141,6 +139,14 @@ export class ControlledHider extends Hider {
             down: game.input.keyboard.addKey(Phaser.KeyCode.S),
             right: game.input.keyboard.addKey(Phaser.KeyCode.D)
         };
+
+        this.stillClock = 3;
+        this.appeared = false;
+
+        this.animations.add('appear', _.range(10, 20).reverse(), 20, false);
+        this.animations.add('disappear', _.range(10, 20), 20, false);
+        this.animations.add('bury', [0, 0, 0, 0, 0, 0, 0].concat(_.range(20)), 30, false);
+        this.animations.play('bury');
     }
 
     update() {
@@ -164,6 +170,26 @@ export class ControlledHider extends Hider {
             } else {
                 this.ty = 0;
             }
+            
+            if (this.tx == 0 && this.ty == 0) {
+                let dt = game.time.elapsedMS / 1000;
+                this.stillClock -= dt;
+                if (this.stillClock < 0 && !this.appeared) {
+                    this.animations.play('appear');
+                    this.appeared = true;
+                }
+            } else {
+                if (this.appeared) {
+                    this.animations.play('disappear');
+                    this.appeared = false;
+                }
+                this.stillClock = 3;
+            }
+
+        } else {
+            this.stillClock = 3;
+            this.tx = 0;
+            this.ty = 0;
         }
 
         super.update();
