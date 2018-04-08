@@ -209,6 +209,11 @@ export class MainState extends Phaser.State {
 			this.group.rotation = 0;
 			this.group2.rotation = 0;
 			this.hourglass.rotation = 0;
+			if (this.greenOnTop) {
+				game.sfx.jojoba_voice.play();
+			} else {
+				game.sfx.cholla_voice.play();
+			}
 		}
 	}
 
@@ -233,6 +238,7 @@ export class MainState extends Phaser.State {
 				if(distance < 150){
 					this.anchor.foundSomething = true;
 					this.anchor.whatIFound = this.anchor.bug;
+					game.sfx.bug_bad.play();
 				}
 			}, this);
 			game.time.events.add(1000, function() {
