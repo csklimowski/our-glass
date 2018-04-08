@@ -139,8 +139,8 @@ export class ControlledHider extends Hider {
         this.stillClock = 3;
         this.appeared = false;
 
-        this.animations.add('appear', _.range(15, 20).reverse(), 20, false);
-        this.animations.add('disappear', _.range(15, 20), 20, false);
+        this.animations.add('appear', _.range(14, 20).reverse(), 20, false);
+        this.animations.add('disappear', _.range(14, 20), 20, false);
         this.animations.add('bury', [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0].concat(_.range(20)), 30, false);
         if (game.tutorial) {
             this.animations.play('bury');

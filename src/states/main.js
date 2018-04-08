@@ -194,7 +194,7 @@ export class MainState extends Phaser.State {
 		this.anchor.foundSomething = false;
 		let distance = Math.sqrt(Math.pow(this.anchor.px - this.hider.px, 2) + Math.pow(this.anchor.py - this.hider.py, 2));
 		game.sfx.hit_ground.play();
-		if (distance < 100) {
+		if (distance < 80) {
 			this.anchor.foundSomething = true;
 			this.anchor.whatIFound.loadTexture('chest');
 			this.spawnClock = 10000;
@@ -208,7 +208,7 @@ export class MainState extends Phaser.State {
 		} else {
 			for (let w of this.wanders.getAll()) {
 				let distance = Math.sqrt(Math.pow(this.anchor.px - w.px, 2) + Math.pow(this.anchor.py - w.py, 2));
-				if(distance < 100){
+				if(distance < 80){
 					this.anchor.foundSomething = true;
 				}
 			}

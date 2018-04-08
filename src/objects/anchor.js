@@ -165,12 +165,9 @@ export class Anchor extends Phaser.Sprite {
                 this.state = FLYING;
             }
         }
-        if (this.state == DROPPING || this.state == DROPPED) {
-            this.altitude = Math.min(this.altitude + 1000*dt, sandPos(game.timer));
-        }
 
         if (this.state == DROPPING) {
-            this.altitude = Math.min(this.altitude + 1000*dt, sandPos(game.timer));
+            this.altitude = Math.min(this.altitude + 1500*dt, sandPos(game.timer));
             if (this.altitude == sandPos(game.timer)) {
                 if (distFromCenter < glassWidth(game.timer)) {
                     this.exploder.start(true, 800, null, 20);

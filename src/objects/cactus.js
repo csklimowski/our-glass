@@ -3,8 +3,13 @@ import { glassWidth, glassHeight, sandPos } from '../util/math';
 
 export class Cactus extends Phaser.Sprite {
     constructor(disappear){
-        super(game, 0, 0, 'cactus');
-		game.add.existing(this);
+        super(game, 0, 0, 'cactus_dance');
+        game.add.existing(this);
+        
+        this.animations.add('dance', _.range(60), 30, true);
+        this.animations.add('fall', _.range(10, 29).reverse(), 30, false);
+        this.animations.play('dance');
+        this.standing = true;
 
         this.d = disappear;
         this.anchor.set(0.5, 1);
@@ -20,7 +25,7 @@ export class Cactus extends Phaser.Sprite {
         this.y = sandPos(game.timer) + this.py *.25;
         this.x = game.width/2 + this.px;
 
-        this.scale.set(.25 * this.y/game.height);
+        this.scale.set(.65 * this.y/game.height);
     }
 
     update() { 
@@ -30,12 +35,20 @@ export class Cactus extends Phaser.Sprite {
         this.y = sandPos(game.timer) + this.py *.25;
         this.x = game.width/2 + this.px;
 
-        this.scale.set(.25 * this.y/game.height);
+        this.scale.set(.65 + 0.0005*this.py);
 
         if (game.timer > this.d) {
-            this.alpha = 0;
+            if (this.standing) {
+                this.loadTexture('cactus_fall');
+                this.animations.play('fall');
+                this.standing = false;
+            }
         } else {
-            this.alpha = 1;
+            if (!this.standing) {
+                this.loadTexture('cactus_dance');
+                this.animations.play('dance');
+                this.standing = true;
+            }
         }
     }
 
