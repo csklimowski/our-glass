@@ -32,8 +32,10 @@ export class Cactus extends Phaser.Sprite {
 
         this.scale.set(.25 * this.y/game.height);
 
-        if(this.d >= glassWidth(game.timer)) {
-            this.destroy();
+        if (game.timer > this.d) {
+            this.alpha = 0;
+        } else {
+            this.alpha = 1;
         }
     }
 

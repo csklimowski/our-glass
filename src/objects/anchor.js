@@ -35,7 +35,6 @@ export class Anchor extends Phaser.Sprite {
         lizard.anchor.set(0.93, 1.05);
         this.addChild(lizard);
         this.lizard = lizard;
-
         
         this.x  = 0; // position to draw
         this.y  = 0; 
@@ -64,11 +63,8 @@ export class Anchor extends Phaser.Sprite {
             up: game.input.keyboard.addKey(Phaser.KeyCode.UP),
             left: game.input.keyboard.addKey(Phaser.KeyCode.LEFT),
             down: game.input.keyboard.addKey(Phaser.KeyCode.DOWN),
-            right: game.input.keyboard.addKey(Phaser.KeyCode.RIGHT),
-            drop: game.input.keyboard.addKey(Phaser.KeyCode.SHIFT)
+            right: game.input.keyboard.addKey(Phaser.KeyCode.RIGHT)
         };
-
-        this.keys.drop.onDown.add(this.dropAnchor, this);
     }
 
     update() {
@@ -170,12 +166,6 @@ export class Anchor extends Phaser.Sprite {
                     this.state = RISING;
                 }
             }
-        }
-    }
-
-    dropAnchor() {
-        if (this.state == FLYING) {
-            this.state = DROPPING;
         }
     }
 
