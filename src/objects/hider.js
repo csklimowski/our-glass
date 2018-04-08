@@ -43,7 +43,9 @@ export class Hider extends Phaser.Sprite {
         if (mag == 0) {
             this.ax = 0;
             this.ay = 0;
+            this.particles.on = false;
         } else {
+            this.particles.on = true;
             this.ax = (this.tx / mag)*this.speed;
             this.ay = (this.ty / mag)*this.speed;
         }
@@ -53,7 +55,7 @@ export class Hider extends Phaser.Sprite {
         // update real position
         this.px += this.vx*dt;
         this.py += this.vy*dt;
-        // boundaries (work in progress)
+        // boundaries
         let sandRadius = glassWidth(game.timer);
         let distFromCenter = Math.sqrt(this.px*this.px + this.py*this.py);
         if (distFromCenter > sandRadius) {
@@ -64,6 +66,9 @@ export class Hider extends Phaser.Sprite {
         // update sprite position
         this.x = game.width/2 + this.px;
         this.y = game.height/2 + this.py;
+        // update particle position
+        this.particles.x = this.x;
+        this.particles.y = sandPos(game.timer) + this.py*0.25;
     }
 }
 
@@ -73,7 +78,22 @@ export class WanderingHider extends Hider {
     }
 
     update() {
+        let dt = game.time.elapsedMS / 1000;
         
+        let targetAngle = Math.atan2(this.ty, this.tx);
+        targetAngle += (Math.random()*10*Math.PI - 5*Math.PI)*dt;
+        
+        let futureDist = Math.sqrt((this.px+this.vx)*(this.px+this.vx) + (this.py+this.vy)*(this.py+this.vy));
+        let sandRadius = glassWidth(game.timer);
+        if (sandRadius - futureDist < -100) {
+            console.log('hello');
+            targetAngle += Math.PI;
+        }
+        
+        this.ty = Math.sin(targetAngle);
+        this.tx = Math.cos(targetAngle);
+
+        super.update();
     }
 }
 
@@ -90,7 +110,7 @@ export class ControlledHider extends Hider {
     }
 
     update() {
-        game.debug.text(Math.cos((this.px/glassWidth(game.timer)) * (Math.PI/2))*glassWidth(game.timer), 100, 100);
+        
         if (this.keys.left.isDown && this.keys.right.isDown) {
             this.tx = 0;
         } else if (this.keys.left.isDown) {

@@ -12,16 +12,8 @@ export class Cactus extends Phaser.Sprite {
         let a = glassWidth(game.timer);
         let b = glassHeight(game.timer);
         
-        this.x = (game.width/2 - a) + Math.random() * (a * 2);
-        this.y = sandPos(game.timer) - (b/2) + Math.random() * (b * 2);
-
-        let angleToCenter = Math.atan2(this.y, this.x);
-        let r = (a*b)/Math.sqrt(a*a*Math.sin(angleToCenter)*Math.sin(angleToCenter) + b*b*Math.cos(b)*Math.cos(b));
-        let linelength = Math.sqrt((x-a)*(x-a) + (y-b)*(y-b));
-        if(lineLength > r) {
-            
-        }
-
+        // this.x = (game.width/2 - a) + Math.random() * (a * 2);
+        // this.y = sandPos(game.timer) - (b/2) + Math.random() * (b * 2);
 
         // let sandRadius = glassWidth(game.timer);
         // let distFromCenter = Math.sqrt(this.x*this.x + this.y*this.y);
