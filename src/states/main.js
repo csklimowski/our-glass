@@ -18,6 +18,8 @@ export class MainState extends Phaser.State {
 		game.timer = 0.4;
 		this.state = PLAYING;
 
+		game.add.image(0, 0, 'grad5');
+
 		this.group2 = game.add.group();
 		this.sand = new Sand();
 		this.group2.add(this.sand);
