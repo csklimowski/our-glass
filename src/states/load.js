@@ -2,6 +2,14 @@ import game from '../game';
 
 export class LoadState extends Phaser.State {
     preload() {
+        //game.add.text(game.width/2, game.height/2, 'Loading...', {font: '30px sans-serif', color: '#fff'});
+        game.add.text(game.width/2, game.height/2, 'Loading...', { font: '30px sans-serif', fill: '#ffffff', align: 'center'}).anchor.set(0.5);
+        game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+        game.scale.windowConstraints.bottom = 'layout';
+        game.scale.pageAlignHorizontally = true;
+        game.scale.pageAlignVertically = true;
+        
+
         game.load.image('sand-particle', 'img/sand-particle.png');
         game.load.image('chest', 'img/sprites/chest.png');
         game.load.image('anchor', 'img/sprites/anchor.png');
@@ -34,12 +42,6 @@ export class LoadState extends Phaser.State {
     }
 
     create() {
-        game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-        game.scale.windowConstraints.bottom = 'layout';
-        game.scale.pageAlignHorizontally = true;
-        game.scale.pageAlignVertically = true;
-        game.state.start('title');
-
         game.sfx = {
             hit_chest: game.add.sound('hit_chest', 0.2),
             hit_glass: game.add.sound('hit_glass', 1),
@@ -53,5 +55,6 @@ export class LoadState extends Phaser.State {
             purple: game.add.sound('purple'),
             bug_bad: game.add.sound('bug_bad', 1)
         };
+        game.state.start('title');
     }
 }

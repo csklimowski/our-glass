@@ -220,6 +220,7 @@ export class MainState extends Phaser.State {
 	}
 
 	onAnchorLand() {
+		if (this.state == VICTORY) return;
 		this.anchor.foundSomething = false;
 		let distance = Math.sqrt(Math.pow(this.anchor.px - this.hider.px, 2) + Math.pow(this.anchor.py - this.hider.py, 2));
 		game.sfx.hit_ground.play();

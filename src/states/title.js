@@ -75,7 +75,7 @@ class TitleMiddle extends Phaser.Sprite{
         super(game, 0, 0, 'middle');
         game.add.existing(this);
 
-        this.scale.set(1.5);
+        this.scale.set(2);
         this.anchor.set(0.5);
 
         this.x = game.width/2;
