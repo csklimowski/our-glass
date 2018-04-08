@@ -3,12 +3,12 @@ import game from '../game';
 export class LoadState extends Phaser.State {
     preload() {
         game.load.image('sand-particle', 'img/sand-particle.png');
-        game.load.image('cactus', 'img/cactus.png');
         game.load.image('chest', 'img/chest.png');
         game.load.image('anchor', 'img/sprites/anchor.png');
         game.load.image('light-sand-particle', 'img/light-sand-particle.png');
         game.load.spritesheet('swayblue', 'img/sprites/swayblue.png', 150, 150);
         game.load.spritesheet('sway', 'img/sprites/sway.png', 150, 150);
+        game.load.spritesheet('cactus', 'img/sprites/sway.png', 110, 200)
         game.load.audio('hit_chest','audio/anchor_hit_chest.ogg');
         game.load.audio('hit_glass','audio/anchor_hit_glass.ogg');
         game.load.audio('hit_ground','audio/anchor_hit_ground.ogg');
