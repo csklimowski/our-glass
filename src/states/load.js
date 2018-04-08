@@ -12,6 +12,7 @@ export class LoadState extends Phaser.State {
         game.load.spritesheet('cactus_dance', 'img/sprites/cactus_dance.png', 140, 150);
         game.load.spritesheet('cactus_fall', 'img/sprites/cactus_fall.png', 128, 149);
         game.load.spritesheet('outofsand', 'img/sprites/outofsand.png', 150, 150);
+        game.load.spritesheet('bug', 'img/sprites/bug.png', 50, 50);
         game.load.audio('hit_chest','audio/anchor_hit_chest.ogg');
         game.load.audio('hit_glass','audio/anchor_hit_glass.ogg');
         game.load.audio('hit_ground','audio/anchor_hit_ground.ogg');
