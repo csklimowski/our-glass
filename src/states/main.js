@@ -28,8 +28,12 @@ export class MainState extends Phaser.State {
 		g.add(this.hider);
 		this.anchor = new Anchor(this.onAnchorLand, this);
 		g.add(this.anchor);
-		g.add(new WanderingHider());
+		let wander = new WanderingHider();
+		g.add(wander);
 		this.group = g;
+
+		this.wanders = game.add.group();
+		this.wanders.add(wander);
 
 		g.pivot.set(game.width/2, 1.5*game.height);
 		g.x = game.width/2;
@@ -51,7 +55,9 @@ export class MainState extends Phaser.State {
 
 		this.spawnClock -= dt;
 		if (this.spawnClock < 0) {
-			g.add(new WanderingHider());
+			let wander = new WanderingHider();
+			g.add(wander);
+			this.wanders.add(wander);
 			this.spawnClock = 1.0 + Math.random()*0.5;
 		}
 
