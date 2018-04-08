@@ -78,7 +78,22 @@ export class WanderingHider extends Hider {
     }
 
     update() {
+        let dt = game.time.elapsedMS / 1000;
         
+        let targetAngle = Math.atan2(this.ty, this.tx);
+        targetAngle += (Math.random()*10*Math.PI - 5*Math.PI)*dt;
+        
+        let futureDist = Math.sqrt((this.px+this.vx)*(this.px+this.vx) + (this.py+this.vy)*(this.py+this.vy));
+        let sandRadius = glassWidth(game.timer);
+        if (sandRadius - futureDist < -100) {
+            console.log('hello');
+            targetAngle += Math.PI;
+        }
+        
+        this.ty = Math.sin(targetAngle);
+        this.tx = Math.cos(targetAngle);
+
+        super.update();
     }
 }
 
@@ -95,7 +110,7 @@ export class ControlledHider extends Hider {
     }
 
     update() {
-        game.debug.text(Math.cos((this.px/glassWidth(game.timer)) * (Math.PI/2))*glassWidth(game.timer), 100, 100);
+        
         if (this.keys.left.isDown && this.keys.right.isDown) {
             this.tx = 0;
         } else if (this.keys.left.isDown) {

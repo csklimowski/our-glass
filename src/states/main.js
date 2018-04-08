@@ -9,15 +9,16 @@ export class MainState extends Phaser.State {
 	create() {
         game.stage.backgroundColor = 0x55aaee;
 		this.graphics = game.add.graphics(0, 0);
-		game.timer = 0.5;
+		game.timer = 0.4;
 		this.sand = new Sand();
 		this.hider = new ControlledHider();
+		new WanderingHider();
 		this.cacti = [ new Cactus() , new Cactus() , new Cactus() ];
 	}
 
 	update() {
 		let dt = game.time.elapsedMS / 1000;
-		//game.timer += dt / 30;
+		game.timer += dt / 40;
 
 		// let h = this.hider;
 		// let s = this.sand;
