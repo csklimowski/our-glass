@@ -13,8 +13,21 @@ export class MainState extends Phaser.State {
 		this.sand = new Sand();
 		this.hider = new ControlledHider();
 		new WanderingHider();
-		this.cacti = [ new Cactus() , new Cactus() , new Cactus() ];
+		this.cacti = [ new Cactus(100) , new Cactus(250) , new Cactus(400) ];
 		this.spawnClock = Math.random();
+		for(let i = 0; i < 3; i++) {
+			for(let j = i + 1; j < 3; j++)
+			{
+				if(this.cacti[i].y > this.cacti[j].y){
+					let temp = this.cacti[i];
+					this.cacti[i] = this.cacti[j];
+					this.cacti[j] = temp;
+				}
+			}
+		}
+		for(let i = 0; i < 3; i++) {
+			game.add.existing(this.cacti[i]);
+		}
 	}
 
 	update() {
