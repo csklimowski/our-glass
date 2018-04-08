@@ -76,11 +76,6 @@ export class Hider extends Phaser.Sprite {
         this.particles.x = this.x;
         this.particles.y = sandPos(game.timer) + this.py*0.25;
     }
-
-    destroy() {
-        this.particles.destroy();
-        super.destroy();
-    }
 }
 
 export class WanderingHider extends Hider {
@@ -105,6 +100,7 @@ export class WanderingHider extends Hider {
         this.lifetime -= dt;
         if (this.lifetime < 0) {
             // die completely
+            this.particles.destroy();
             this.destroy();
         } else if (this.lifetime < 0.3) {
             // stop moving before death to let particles finish
@@ -143,13 +139,18 @@ export class ControlledHider extends Hider {
         this.stillClock = 3;
         this.appeared = false;
 
-        this.animations.add('appear', _.range(10, 20).reverse(), 20, false);
-        this.animations.add('disappear', _.range(10, 20), 20, false);
-        this.animations.add('bury', [0, 0, 0, 0, 0, 0, 0].concat(_.range(20)), 30, false);
-        this.animations.play('bury');
+        this.animations.add('appear', _.range(14, 20).reverse(), 20, false);
+        this.animations.add('disappear', _.range(14, 20), 20, false);
+        this.animations.add('bury', [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0].concat(_.range(20)), 30, false);
+        if (game.tutorial) {
+            this.animations.play('bury');
+        }
     }
 
     update() {
+        
+        let dt = game.time.elapsedMS / 1000;
+
         if (this.state == MOVING) {
             if (this.keys.left.isDown && this.keys.right.isDown) {
                 this.tx = 0;
@@ -172,7 +173,6 @@ export class ControlledHider extends Hider {
             }
             
             if (this.tx == 0 && this.ty == 0) {
-                let dt = game.time.elapsedMS / 1000;
                 this.stillClock -= dt;
                 if (this.stillClock < 0 && !this.appeared) {
                     this.animations.play('appear');
