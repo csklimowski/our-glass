@@ -38,10 +38,12 @@ export class MainState extends Phaser.State {
 		g.add(wander);
 		this.group = g;
 
-		let angleToCenter = Math.random()*2*Math.PI;
-		let distFromCenter = Math.random()*glassWidth(game.timer);
-		this.hider.py = Math.sin(angleToCenter)*distFromCenter;
-		this.hider.px = Math.cos(angleToCenter)*distFromCenter;
+		if (!game.tutorial) {
+			let angleToCenter = Math.random()*2*Math.PI;
+			let distFromCenter = Math.random()*glassWidth(game.timer);
+			this.hider.py = Math.sin(angleToCenter)*distFromCenter;
+			this.hider.px = Math.cos(angleToCenter)*distFromCenter;
+		}
 
 		
 		this.wanders = game.add.group();
