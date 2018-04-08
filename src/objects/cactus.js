@@ -12,7 +12,7 @@ export class Cactus extends Phaser.Sprite {
         this.standing = true;
 
         this.d = disappear;
-        this.anchor.set(0.5, 1);
+        this.anchor.set(0.75, .9);
 
         this.angleToCenter = Math.random()*2*Math.PI;
         this.p = Math.random();

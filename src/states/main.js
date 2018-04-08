@@ -78,6 +78,9 @@ export class MainState extends Phaser.State {
 				this.anchor.state = DROPPING;
 			}
 		}, this);
+
+		game.sfx.orange.play('', 0, 0, true);
+		game.sfx.purple.play('', 0, 1, true);
 	}
 
 	update() {
@@ -189,6 +192,13 @@ export class MainState extends Phaser.State {
 
 			this.state = FLIP2;
 			game.sfx.whoosh.play();
+			if(this.greenOnTop) {
+				game.sfx.orange.fadeOut(1000);
+				game.sfx.purple.fadeIn(1000, true);
+			} else if(!this.greenOnTop) {
+				game.sfx.purple.fadeOut(1000);
+				game.sfx.orange.fadeIn(1000, true);
+			}
 		}
 
 		if (this.state == FLIP2 && this.group.rotation >= 0) {
