@@ -8,12 +8,14 @@ import { glassWidth, glassHeight, sandPos } from '../util/math';
 const PLAYING = 0;
 const FLIP1 = 1;
 const FLIP2 = 2;
+const VICTORY = 3;
 
 export class MainState extends Phaser.State {
 
 	create() {
         game.stage.backgroundColor = 0x55aaee;
 		game.timer = 0.4;
+		this.state = PLAYING;
 
 		this.group2 = game.add.group();
 		this.sand = new Sand();
@@ -39,20 +41,43 @@ export class MainState extends Phaser.State {
 		g.x = game.width/2;
 		g.y = 1.5*game.height;
 
-		this.cacti = [ new Cactus(100) , new Cactus(250) , new Cactus(400) ];
+		this.cacti = [ new Cactus(0.5) , new Cactus(0.65) , new Cactus(0.8) ];
 		this.spawnClock = Math.random();
 		for(let i = 0; i < 3; i++) {
 			g.add(this.cacti[i]);
 		}
 		game.world.bringToTop(g);
 		g.sort('py', Phaser.Group.SORT_ASCENDING);
+
+		this.greenOnTop = true;
+		let greenDrop = game.input.keyboard.addKey(Phaser.KeyCode.QUESTION_MARK);
+		greenDrop.onDown.add(function() {
+			if (this.greenOnTop && this.anchor.state == FLYING && this.state != VICTORY) {
+				this.anchor.state = DROPPING;
+			}
+		}, this);
+		let blueDrop = game.input.keyboard.addKey(Phaser.KeyCode.Q);
+		blueDrop.onDown.add(function() {
+			if (!this.greenOnTop && this.anchor.state == FLYING && this.state != VICTORY) {
+				this.anchor.state = DROPPING;
+			}
+		}, this);
 	}
 
 	update() {
 		let dt = game.time.elapsedMS / 1000;
-		game.timer += dt / 40;
-		let g = this.group;
 
+		if (this.state == VICTORY) {
+			game.timer = Math.min(game.timer + dt, 2);
+		}
+		if (this.state == PLAYING) {
+			game.timer += dt / 40;
+			if (game.timer > 0.85) {
+				this.state = VICTORY;
+			}
+		}
+		
+		let g = this.group;
 		this.spawnClock -= dt;
 		if (this.spawnClock < 0) {
 			let wander = new WanderingHider();
@@ -73,9 +98,30 @@ export class MainState extends Phaser.State {
 		if (this.state == FLIP1 && this.group.rotation > Math.PI/2) {
 			this.group.rotation = -Math.PI/2;
 			this.group2.rotation = -Math.PI/2;
+			
+			game.timer = 1 - game.timer;
+
+			// random new position for player
+			let angleToCenter = Math.random()*2*Math.PI;
+			let distFromCenter = Math.random()*glassWidth(game.timer);
+			this.hider.py = Math.sin(angleToCenter)*distFromCenter;
+			this.hider.px = Math.cos(angleToCenter)*distFromCenter;
+
+			// swap anchor stuff
 			this.anchor.altitude = 200;
 			this.anchor.state = FLYING;
-			game.timer = 1 - game.timer;
+			if (this.greenOnTop) {
+				this.anchor.lizard.loadTexture('swayblue');
+			} else {
+				this.anchor.lizard.loadTexture('sway');
+			}
+			this.greenOnTop = !this.greenOnTop;
+			this.anchor.lizard.animations.play('sway');
+
+			let temp = this.anchor.keys;
+			this.anchor.keys = this.hider.keys;
+			this.hider.keys = temp;
+
 			this.state = FLIP2;
 			game.sfx.whoosh.play();
 		}
