@@ -11,8 +11,12 @@ export class Anchor extends Phaser.Sprite {
         super(game, 0, 0, 'anchor');
         this.shadow = game.add.graphics(0, 0);
         this.shadow.on = true;
+
+        this.rope = game.add.graphics(0, 0);
+        this.addChild(this.rope);
+
         game.add.existing(this);
-        
+
         let particles = game.add.emitter();
 		particles.makeParticles('sand-particle');
 		particles.width = 60;
@@ -24,13 +28,14 @@ export class Anchor extends Phaser.Sprite {
         particles.gravity = 700;
         this.exploder = particles;
         this.addChild(particles);
-
+        
         let lizard = game.add.sprite(0, 0, 'sway');
         lizard.animations.add('sway', _.range(60), 30, true);
         lizard.animations.play('sway');
-        lizard.anchor.set(0.9, 1);
+        lizard.anchor.set(0.93, 1.05);
         this.addChild(lizard);
         this.lizard = lizard;
+
         
         this.x  = 0; // position to draw
         this.y  = 0; 
@@ -134,6 +139,11 @@ export class Anchor extends Phaser.Sprite {
             this.shadow.beginFill(0x000000, 0.3);
             this.shadow.drawEllipse(0, 0, shadowWidth, 0.25*shadowWidth);
         }
+        // draw rope
+        this.rope.clear();
+        this.rope.lineStyle(7, 0x664400);
+        this.rope.moveTo(0, -140);
+        this.rope.lineTo(0, -1000);
 
         // dropping/rising behavior
         if (this.state == DROPPED) {
