@@ -17,6 +17,12 @@ export class Hider extends Phaser.Sprite {
         this.tx = 0; // target to follow
         this.ty = 0;
 
+        this.scale.set(0.5);
+
+        this.speed = 200;
+
+        this.anchor.set(0.5);
+
         let particles = game.add.emitter(0, 0);
 		particles.makeParticles('sand-particle');
 		particles.width = 15;
@@ -32,15 +38,14 @@ export class Hider extends Phaser.Sprite {
 
     update() {
         let dt = game.time.elapsedMS / 1000;
-
         // normalize acceleration
         let mag = Math.sqrt(this.tx*this.tx + this.ty*this.ty);
         if (mag == 0) {
             this.ax = 0;
             this.ay = 0;
         } else {
-            this.ax = this.tx / mag;
-            this.ay = this.ty / mag;
+            this.ax = (this.tx / mag)*this.speed;
+            this.ay = (this.ty / mag)*this.speed;
         }
         // accelerate smoothly
         this.vx += 10*(this.ax - this.vx)*dt;
@@ -49,16 +54,16 @@ export class Hider extends Phaser.Sprite {
         this.px += this.vx*dt;
         this.py += this.vy*dt;
         // boundaries (work in progress)
-        let minX = Math.sin(this.py * (Math.PI/2));
-        let maxX = Math.sin(this.py * (Math.PI/2));
-        //if (this.px > Math.sin(this.py*(Math.PI/2)))
-        if (this.px > 1) this.px = 1;
-        if (this.px < -1) this.px = -1;
-        if (this.py > 1) this.py = 1;
-        if (this.py < -1) this.py = -1;
+        let sandRadius = glassWidth(game.timer);
+        let distFromCenter = Math.sqrt(this.px*this.px + this.py*this.py);
+        if (distFromCenter > sandRadius) {
+            let angleToCenter = Math.atan2(this.py, this.px);
+            this.py = Math.sin(angleToCenter)*sandRadius;
+            this.px = Math.cos(angleToCenter)*sandRadius;
+        }
         // update sprite position
-        this.x = game.width/2 + 400*(this.px);
-        this.y = game.height/2 + 400*(this.py);
+        this.x = game.width/2 + this.px;
+        this.y = game.height/2 + this.py;
     }
 }
 
@@ -85,7 +90,7 @@ export class ControlledHider extends Hider {
     }
 
     update() {
-        game.debug.text('X: ' + this.px + '\ny: ' + this.py, 100, 100);
+        game.debug.text(Math.cos((this.px/glassWidth(game.timer)) * (Math.PI/2))*glassWidth(game.timer), 100, 100);
         if (this.keys.left.isDown && this.keys.right.isDown) {
             this.tx = 0;
         } else if (this.keys.left.isDown) {
