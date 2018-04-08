@@ -43,7 +43,9 @@ export class Hider extends Phaser.Sprite {
         if (mag == 0) {
             this.ax = 0;
             this.ay = 0;
+            this.particles.on = false;
         } else {
+            this.particles.on = true;
             this.ax = (this.tx / mag)*this.speed;
             this.ay = (this.ty / mag)*this.speed;
         }
@@ -53,7 +55,7 @@ export class Hider extends Phaser.Sprite {
         // update real position
         this.px += this.vx*dt;
         this.py += this.vy*dt;
-        // boundaries (work in progress)
+        // boundaries
         let sandRadius = glassWidth(game.timer);
         let distFromCenter = Math.sqrt(this.px*this.px + this.py*this.py);
         if (distFromCenter > sandRadius) {
@@ -64,6 +66,9 @@ export class Hider extends Phaser.Sprite {
         // update sprite position
         this.x = game.width/2 + this.px;
         this.y = game.height/2 + this.py;
+        // update particle position
+        this.particles.x = this.x;
+        this.particles.y = sandPos(game.timer) + this.py*0.25;
     }
 }
 

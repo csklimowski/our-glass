@@ -15,7 +15,7 @@ export class MainState extends Phaser.State {
 
 	update() {
 		let dt = game.time.elapsedMS / 1000;
-		game.timer += dt / 30;
+		//game.timer += dt / 30;
 
 		// let h = this.hider;
 		// let s = this.sand;
