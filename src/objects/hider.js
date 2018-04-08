@@ -24,9 +24,10 @@ export class Hider extends Phaser.Sprite {
         this.speed = 200;
 
         this.scale.set(0);
+        this.rotation = Math.PI/2;
         this.anchor.set(0.5);
 
-        let particles = game.add.emitter(0, 0);
+        let particles = game.add.emitter();
 		particles.makeParticles('sand-particle');
 		particles.width = 15;
 		particles.height = 5;

@@ -1,5 +1,6 @@
 import game from '../game';
 import { Hider, ControlledHider, WanderingHider } from '../objects/hider';
+import { Anchor } from '../objects/anchor';
 import { Sand } from '../objects/sand';
 import { Cactus } from '../objects/cactus';
 import { glassWidth, glassHeight, sandPos } from '../util/math';
@@ -12,6 +13,7 @@ export class MainState extends Phaser.State {
 		game.timer = 0.4;
 		this.sand = new Sand();
 		this.hider = new ControlledHider();
+		new Anchor();
 		new WanderingHider();
 		this.cacti = [ new Cactus() , new Cactus() , new Cactus() ];
 		this.spawnClock = Math.random();
@@ -24,9 +26,8 @@ export class MainState extends Phaser.State {
 		this.spawnClock -= dt;
 		if (this.spawnClock < 0) {
 			new WanderingHider();
-			this.spawnClock = 0.5 + Math.random()*0.5;
+			this.spawnClock = 1.0 + Math.random()*0.5;
 		}
-
 
 		// let h = this.hider;
 		// let s = this.sand;
