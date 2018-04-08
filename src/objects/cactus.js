@@ -8,9 +8,9 @@ export class Cactus extends Phaser.Sprite {
 
         this.d = disappear;
         this.anchor.set(0.5, 1);
-
-        let a = glassWidth(game.timer);
-        let b = glassHeight(game.timer);
+        
+        this.animations.add('cactus',  _.range(60), 30, true);
+        this.animations.play('cactus');
 
         this.angleToCenter = Math.random()*2*Math.PI;
         this.p = Math.random();
@@ -20,7 +20,7 @@ export class Cactus extends Phaser.Sprite {
         this.y = sandPos(game.timer) + this.py *.25;
         this.x = game.width/2 + this.px;
 
-        this.scale.set(.25 * this.y/game.height);
+        this.scale.set(0.8 * this.y/game.height, 0.5 * this.y/game.height);
     }
 
     update() { 
@@ -30,7 +30,7 @@ export class Cactus extends Phaser.Sprite {
         this.y = sandPos(game.timer) + this.py *.25;
         this.x = game.width/2 + this.px;
 
-        this.scale.set(.25 * this.y/game.height);
+        this.scale.set(0.8 * this.y/game.height, 0.5 * this.y/game.height);
 
         if (game.timer > this.d) {
             this.alpha = 0;
