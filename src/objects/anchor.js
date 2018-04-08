@@ -37,9 +37,17 @@ export class Anchor extends Phaser.Sprite {
         this.lizard = lizard;
 
         this.foundSomething = false;
-        this.whatIFound = game.add.sprite(0, 0);
-        this.whatIFound.anchor.set(0.5);
-        this.addChild(this.whatIFound);
+        this.chest = game.add.sprite(0, 0, 'chest');
+        this.chest.anchor.set(0.5);
+        this.chest.scale.set(0);
+        this.addChild(this.chest);
+        this.bug = game.add.sprite(0, 0, 'bug');
+        this.bug.animations.add('bugflap', [0, 1, 2, 3], 30, true);
+        this.bug.animations.play('bugflap');
+        this.bug.anchor.set(0.5);
+        this.bug.scale.set(0);
+        this.addChild(this.bug);
+        this.whatIFound = this.chest;
         
         this.x  = 0; // position to draw
         this.y  = 0; 
