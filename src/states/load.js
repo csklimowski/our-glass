@@ -9,6 +9,7 @@ export class LoadState extends Phaser.State {
         game.load.image('light-sand-particle', 'img/light-sand-particle.png');
         game.load.spritesheet('swayblue', 'img/sprites/swayblue.png', 150, 150);
         game.load.spritesheet('sway', 'img/sprites/sway.png', 150, 150);
+        game.load.spritesheet('outofsand', 'img/sprites/outofsand.png', 150, 150);
         game.load.audio('hit_chest','audio/anchor_hit_chest.ogg');
         game.load.audio('hit_glass','audio/anchor_hit_glass.ogg');
         game.load.audio('hit_ground','audio/anchor_hit_ground.ogg');

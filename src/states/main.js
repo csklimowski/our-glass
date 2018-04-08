@@ -100,6 +100,8 @@ export class MainState extends Phaser.State {
 			let distFromCenter = Math.random()*glassWidth(game.timer);
 			this.hider.py = Math.sin(angleToCenter)*distFromCenter;
 			this.hider.px = Math.cos(angleToCenter)*distFromCenter;
+			this.hider.frame = 19;
+			this.hider.appeared = false;
 
 			// swap anchor stuff
 			this.anchor.altitude = 200;
