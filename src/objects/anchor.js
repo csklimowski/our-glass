@@ -157,6 +157,7 @@ export class Anchor extends Phaser.Sprite {
                     this.state = DROPPED;
                     this.onAnchorLand.call(this.onAnchorLandContext);
                 } else {
+                    game.sfx.hit_glass.play();
                     this.state = RISING;
                 }
             }
