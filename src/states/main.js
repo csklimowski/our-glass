@@ -148,6 +148,12 @@ export class MainState extends Phaser.State {
 			}, this);
 			game.sfx.hit_chest.play();
 		} else {
+			for (let w of this.wanders.getAll()) {
+				let distance = Math.sqrt(Math.pow(this.anchor.px - w.px, 2) + Math.pow(this.anchor.py - w.py, 2));
+				if(distance < 100){
+
+				}
+			}
 			game.time.events.add(1000, function() {
 				this.anchor.state = RISING;
 			}, this);
