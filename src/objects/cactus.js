@@ -7,15 +7,12 @@ export class Cactus extends Phaser.Sprite {
         game.add.existing(this);
         
         this.animations.add('dance', _.range(60), 30, true);
-        this.animations.add('fall', _.range(10, 29).reverse(), 30, false);
+        this.animations.add('fall', _.range(0, 20).reverse(), 30, false);
         this.animations.play('dance');
         this.standing = true;
 
         this.d = disappear;
         this.anchor.set(0.5, 1);
-        
-        this.animations.add('cactus',  _.range(60), 30, true);
-        this.animations.play('cactus');
 
         this.angleToCenter = Math.random()*2*Math.PI;
         this.p = Math.random();
