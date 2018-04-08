@@ -1,15 +1,16 @@
 import game from '../game';
 import { glassWidth, glassHeight, sandPos } from '../util/math';
 
-const FLYING = 0;
-const DROPPING = 1;
-const DROPPED = 2;
-const RISING = 3;
+export const FLYING = 0;
+export const DROPPING = 1;
+export const DROPPED = 2;
+export const RISING = 3;
 
 export class Anchor extends Phaser.Sprite {
-    constructor(hider) {
+    constructor(onAnchorLand, onAnchorLandContext) {
         super(game, 0, 0, 'anchor');
         this.shadow = game.add.graphics(0, 0);
+        this.shadow.on = true;
         game.add.existing(this);
         
         let particles = game.add.emitter();
@@ -48,8 +49,9 @@ export class Anchor extends Phaser.Sprite {
 
         this.altitude = 200;
         this.speed = 400;
-        this.hider = hider;
         this.state = FLYING;
+        this.onAnchorLand = onAnchorLand;
+        this.onAnchorLandContext = onAnchorLandContext;
 
         this.anchor.set(0.5, 1);
 
@@ -125,7 +127,7 @@ export class Anchor extends Phaser.Sprite {
         this.y = this.altitude + this.py*0.25;
         // draw shadow
         this.shadow.clear();
-        if (distFromCenter < glassWidth(game.timer)) {
+        if (distFromCenter < glassWidth(game.timer) && this.shadow.on) {
             let shadowWidth = 60 - 0.1*(sandPos(game.timer) - this.y);
             this.shadow.x = this.x;
             this.shadow.y = sandPos(game.timer) + this.py*0.25;
@@ -143,15 +145,17 @@ export class Anchor extends Phaser.Sprite {
                 this.state = FLYING;
             }
         }
+        if (this.state == DROPPING || this.state == DROPPED) {
+            this.altitude = Math.min(this.altitude + 1000*dt, sandPos(game.timer));
+        }
+
         if (this.state == DROPPING) {
             this.altitude = Math.min(this.altitude + 1000*dt, sandPos(game.timer));
             if (this.altitude == sandPos(game.timer)) {
                 if (distFromCenter < glassWidth(game.timer)) {
                     this.exploder.start(true, 800, null, 20);
                     this.state = DROPPED;
-                    game.time.events.add(1000, function() {
-                        this.state = RISING;
-                    }, this);
+                    this.onAnchorLand.call(this.onAnchorLandContext);
                 } else {
                     this.state = RISING;
                 }
