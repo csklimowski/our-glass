@@ -19,6 +19,8 @@ export class LoadState extends Phaser.State {
         game.load.audio('bury_chest','audio/bury_chest.ogg');
         game.load.audio('anchor_fall','audio/falling_anchor.ogg');
         game.load.audio('whoosh', 'audio/hourglass_flip_whoosh.ogg');
+        game.load.audio('jojoba_voice', 'audio/jojoba_voice.ogg');
+        game.load.audio('cholla_voice', 'audio/cholla_voice.ogg');
     }
 
     create() {
@@ -34,7 +36,9 @@ export class LoadState extends Phaser.State {
             hit_ground: game.add.sound('hit_ground', 1),
             bury: game.add.sound('bury_chest', 1),
             fall: game.add.sound('anchor_fall', 1),
-            whoosh: game.add.sound('whoosh', 2)
+            whoosh: game.add.sound('whoosh', 2),
+            jojoba_voice: game.add.sound('jojoba_voice', 1),
+            cholla_voice: game.add.sound('cholla_voice', 1)
         };
     }
 }

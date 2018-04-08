@@ -199,6 +199,11 @@ export class MainState extends Phaser.State {
 			this.group.rotation = 0;
 			this.group2.rotation = 0;
 			this.hourglass.rotation = 0;
+			if (this.greenOnTop) {
+				game.sfx.jojoba_voice.play();
+			} else {
+				game.sfx.cholla_voice.play();
+			}
 		}
 	}
 
