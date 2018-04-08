@@ -16,7 +16,7 @@ export class MainState extends Phaser.State {
 	create() {
 		game.sfx.title.pause();
         game.stage.backgroundColor = 0x55aaee;
-		game.timer = 0.4;
+		game.timer = 0.3;
 		this.state = PLAYING;
 
 		game.add.image(0, 0, 'grad5');
@@ -37,6 +37,11 @@ export class MainState extends Phaser.State {
 		let wander = new WanderingHider();
 		g.add(wander);
 		this.group = g;
+
+		let angleToCenter = Math.random()*2*Math.PI;
+		let distFromCenter = Math.random()*glassWidth(game.timer);
+		this.hider.py = Math.sin(angleToCenter)*distFromCenter;
+		this.hider.px = Math.cos(angleToCenter)*distFromCenter;
 
 		
 		this.wanders = game.add.group();
