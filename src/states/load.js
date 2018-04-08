@@ -39,6 +39,7 @@ export class LoadState extends Phaser.State {
         game.load.audio('orange', 'audio/orange_music.ogg');
         game.load.audio('purple', 'audio/purple_music.ogg');
         game.load.audio('bug_bad', 'audio/bug_bad.ogg');
+        game.load.audio('titlemusic', 'audio/title_music.ogg');
     }
 
     create() {
@@ -49,11 +50,12 @@ export class LoadState extends Phaser.State {
             bury: game.add.sound('bury_chest', 1),
             fall: game.add.sound('anchor_fall', 1),
             whoosh: game.add.sound('whoosh', 2),
-            jojoba_voice: game.add.sound('jojoba_voice', 0.3),
-            cholla_voice: game.add.sound('cholla_voice', 0.3),
-            orange: game.add.sound('orange'),
-            purple: game.add.sound('purple'),
-            bug_bad: game.add.sound('bug_bad', 1)
+            jojoba_voice: game.add.sound('jojoba_voice', 0.5),
+            cholla_voice: game.add.sound('cholla_voice', 0.5),
+            orange: game.add.sound('orange', 1),
+            purple: game.add.sound('purple', 1),
+            bug_bad: game.add.sound('bug_bad', 1),
+            title: game.add.sound('titlemusic', 1)
         };
         game.state.start('title');
     }

@@ -35,6 +35,7 @@ export class TitleState extends Phaser.State{
             game.state.start('main');
         });
 
+        game.sfx.title.play('', 0, 1, true);
     }
 }
 

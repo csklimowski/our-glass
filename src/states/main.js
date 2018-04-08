@@ -14,6 +14,7 @@ const TUTORIAL = 4;
 export class MainState extends Phaser.State {
 
 	create() {
+		game.sfx.title.pause();
         game.stage.backgroundColor = 0x55aaee;
 		game.timer = 0.4;
 		this.state = PLAYING;
