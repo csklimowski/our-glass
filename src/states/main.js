@@ -27,34 +27,25 @@ export class MainState extends Phaser.State {
 
 		this.cacti = [ new Cactus(100) , new Cactus(250) , new Cactus(400) ];
 		this.spawnClock = Math.random();
-		// for(let i = 0; i < 3; i++) {
-		// 	for(let j = i + 1; j < 3; j++)
-		// 	{
-		// 		if(this.cacti[i].y > this.cacti[j].y){
-		// 			let temp = this.cacti[i];
-		// 			this.cacti[i] = this.cacti[j];
-		// 			this.cacti[j] = temp;
-		// 		}
-		// 	}
-		// }
 		for(let i = 0; i < 3; i++) {
-			game.add.existing(this.cacti[i]);
 			g.add(this.cacti[i]);
 		}
-		game.world.bringToTop(this.group);
+		game.world.bringToTop(g);
 		g.sort('py', Phaser.Group.SORT_ASCENDING);
 	}
 
 	update() {
 		let dt = game.time.elapsedMS / 1000;
 		game.timer += dt / 40;
+		let g = this.group;
 
 		this.spawnClock -= dt;
 		if (this.spawnClock < 0) {
-			new WanderingHider();
+			g.add(new WanderingHider());
 			this.spawnClock = 1.0 + Math.random()*0.5;
 		}
 
-		this.group.sort('py', Phaser.Group.SORT_ASCENDING);
+		game.world.bringToTop(g)
+		g.sort('py', Phaser.Group.SORT_ASCENDING);
 	}
 }

@@ -4,6 +4,7 @@ import { glassWidth, glassHeight, sandPos } from '../util/math';
 export class Cactus extends Phaser.Sprite {
     constructor(disappear){
         super(game, 0, 0, 'cactus');
+		game.add.existing(this);
 
         this.d = disappear;
         this.anchor.set(0.5, 1);
@@ -28,6 +29,8 @@ export class Cactus extends Phaser.Sprite {
         this.px = Math.cos(this.angleToCenter)*distFromCenter;
         this.y = sandPos(game.timer) + this.py *.25;
         this.x = game.width/2 + this.px;
+
+        this.scale.set(.25 * this.y/game.height);
 
         if(this.d >= glassWidth(game.timer)) {
             this.destroy();
