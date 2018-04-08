@@ -238,6 +238,7 @@ export class MainState extends Phaser.State {
 				if(distance < 150){
 					this.anchor.foundSomething = true;
 					this.anchor.whatIFound = this.anchor.bug;
+					game.sfx.bug_bad.play();
 				}
 			}, this);
 			game.time.events.add(1000, function() {
