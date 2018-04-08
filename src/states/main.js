@@ -1,5 +1,5 @@
 import game from '../game';
-import { Hider, ControlledHider, WanderingHider } from '../objects/hider';
+import { ControlledHider, WanderingHider, MOVING, FOUND } from '../objects/hider';
 import { Anchor, DROPPING, DROPPED, FLYING, RISING } from '../objects/anchor';
 import { Sand } from '../objects/sand';
 import { Cactus } from '../objects/cactus';
@@ -18,10 +18,10 @@ export class MainState extends Phaser.State {
 		this.group2 = game.add.group();
 		this.sand = new Sand();
 		this.group2.add(this.sand);
+
 		this.group2.pivot.set(game.width/2, 1.5*game.height);
 		this.group2.x = game.width/2;
 		this.group2.y = 1.5*game.height;
-		this.tween2 = game.add.tween(this.group2);
 		
 		let g = game.add.group();
 		this.hider = new ControlledHider();
@@ -30,10 +30,10 @@ export class MainState extends Phaser.State {
 		g.add(this.anchor);
 		g.add(new WanderingHider());
 		this.group = g;
+
 		g.pivot.set(game.width/2, 1.5*game.height);
 		g.x = game.width/2;
 		g.y = 1.5*game.height;
-		this.tween1 = game.add.tween(g);
 
 		this.cacti = [ new Cactus(100) , new Cactus(250) , new Cactus(400) ];
 		this.spawnClock = Math.random();
@@ -75,6 +75,7 @@ export class MainState extends Phaser.State {
 
 		if (this.state == FLIP2 && this.group.rotation >= 0) {
 			this.state = PLAYING;
+			this.hider.state = MOVING;
 			this.anchor.shadow.on = true;
 			this.spawnClock = Math.random();
 			this.group.rotation = 0;
@@ -86,6 +87,7 @@ export class MainState extends Phaser.State {
 		let distance = Math.sqrt(Math.pow(this.anchor.px - this.hider.px, 2) + Math.pow(this.anchor.py - this.hider.py, 2));
 		if (distance < 100) {
 			this.spawnClock = 10000;
+			this.hider.state = FOUND;
 			game.time.events.add(1000, function() {
 				this.anchor.shadow.on = false;
 				this.state = FLIP1;

@@ -1,6 +1,9 @@
 import game from '../game';
 import { glassWidth, glassHeight, sandPos } from '../util/math';
 
+export const MOVING = 0;
+export const FOUND = 1;
+
 export class Hider extends Phaser.Sprite {
     constructor() {
         super(game, 0, 0, 'chest');
@@ -22,6 +25,7 @@ export class Hider extends Phaser.Sprite {
         this.ty = 0;
 
         this.speed = 200;
+        this.state = MOVING;
 
         this.scale.set(0);
         this.rotation = Math.PI/2;
@@ -140,25 +144,26 @@ export class ControlledHider extends Hider {
     }
 
     update() {
-
-        if (this.keys.left.isDown && this.keys.right.isDown) {
-            this.tx = 0;
-        } else if (this.keys.left.isDown) {
-            this.tx = -1;
-        } else if (this.keys.right.isDown) {
-            this.tx = 1;
-        } else {
-            this.tx = 0;
-        }
-        
-        if (this.keys.up.isDown && this.keys.down.isDown) {
-            this.ty = 0;
-        } else if (this.keys.up.isDown) {
-            this.ty = -1;
-        } else if (this.keys.down.isDown) {
-            this.ty = 1;
-        } else {
-            this.ty = 0;
+        if (this.state == MOVING) {
+            if (this.keys.left.isDown && this.keys.right.isDown) {
+                this.tx = 0;
+            } else if (this.keys.left.isDown) {
+                this.tx = -1;
+            } else if (this.keys.right.isDown) {
+                this.tx = 1;
+            } else {
+                this.tx = 0;
+            }
+            
+            if (this.keys.up.isDown && this.keys.down.isDown) {
+                this.ty = 0;
+            } else if (this.keys.up.isDown) {
+                this.ty = -1;
+            } else if (this.keys.down.isDown) {
+                this.ty = 1;
+            } else {
+                this.ty = 0;
+            }
         }
 
         super.update();

@@ -5,7 +5,7 @@ export class LoadState extends Phaser.State {
         game.load.image('sand-particle', 'img/sand-particle.png');
         game.load.image('cactus', 'img/cactus.png');
         game.load.image('chest', 'img/chest.png');
-        game.load.image('anchor', 'img/anchor.png');
+        game.load.image('anchor', 'img/sprites/anchor.png');
         game.load.image('light-sand-particle', 'image/light-sand-particle.png');
         game.load.spritesheet('sway', 'img/sprites/sway.png', 150, 150);
     }
