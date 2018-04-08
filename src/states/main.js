@@ -13,7 +13,7 @@ export class MainState extends Phaser.State {
 		game.timer = 0.4;
 		this.sand = new Sand();
 		this.hider = new ControlledHider();
-		new Anchor();
+		this.anchor = new Anchor(this.hider);
 		new WanderingHider();
 		this.cacti = [ new Cactus(100) , new Cactus(250) , new Cactus(400) ];
 		this.spawnClock = Math.random();
@@ -40,14 +40,6 @@ export class MainState extends Phaser.State {
 		if (this.spawnClock < 0) {
 			new WanderingHider();
 			this.spawnClock = 1.0 + Math.random()*0.5;
-		}
-
-		// let h = this.hider;
-		// let s = this.sand;
-		// h.x = 0.5*Math.cos(game.time.now/1000);
-		// h.y = 0.5*Math.sin(game.time.now/1000);
-
-		// h.particles.x = s.ellipse.x + h.x*(s.ellipse.width);
-		// h.particles.y = s.ellipse.y + h.y*(s.ellipse.height);
+		}		
 	}
 }
