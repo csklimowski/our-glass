@@ -22,9 +22,9 @@ export class MainState extends Phaser.State {
 		this.sand = new Sand();
 		this.group2.add(this.sand);
 
-		this.group2.pivot.set(game.width/2, 1.5*game.height);
+		this.group2.pivot.set(game.width/2, 1.24*game.height);
 		this.group2.x = game.width/2;
-		this.group2.y = 1.5*game.height;
+		this.group2.y = 1.24*game.height;
 		
 		let g = game.add.group();
 		this.hider = new ControlledHider();
@@ -39,9 +39,9 @@ export class MainState extends Phaser.State {
 		this.wanders = game.add.group();
 		this.wanders.add(wander);
 		
-		g.pivot.set(game.width/2, 1.5*game.height);
+		g.pivot.set(game.width/2, 1.24*game.height);
 		g.x = game.width/2;
-		g.y = 1.5*game.height;
+		g.y = 1.24*game.height;
 		
 		this.cacti = [ new Cactus(0.5) , new Cactus(0.65) , new Cactus(0.8) ];
 		this.spawnClock = Math.random();
