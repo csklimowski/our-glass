@@ -8,20 +8,27 @@ export class TitleState extends Phaser.State{
     create() {
         game.state.backgroundColor = 0x000000;
 
-        let text = game.add.text(game.width/2, game.height/2, "Start Game", { font: 'normal 40px Serif', fill: '#FFFFFF' });
+        let text = game.add.text(game.width/2, game.height/2, "Play", { font: 'normal 40px Serif', fill: '#FFFFFF' });
         text.inputEnabled = true;
-        text.anchor.x = 0.5;
-        text.anchor.y = 0.5;
+        text.anchor.set(0.5);
         text.events.onInputDown.add(function() {
+            game.tutorial = false;
             game.state.start('main');
         });
 
-        let control = game.add.text(game.width/2, game.height/2+50, "Controls", { font: 'normal 40px Serif', fill: '#FFFFFF' });
+        let control = game.add.text(game.width/2, game.height/2+100, "Controls", { font: 'normal 40px Serif', fill: '#FFFFFF' });
         control.inputEnabled = true;
-        control.anchor.x = 0.5;
-        control.anchor.y = 0.5;
+        control.anchor.set(0.5);
         control.events.onInputDown.add(function() {
             game.state.start('control');
+        });
+
+        let tutorial = game.add.text(game.width/2, game.height/2+50, "Tutorial", { font: 'normal 40px Serif', fill: '#fff'});
+        tutorial.inputEnabled = true;
+        tutorial.anchor.set(0.5);
+        tutorial.events.onInputDown.add(function() {
+            game.tutorial = true;
+            game.state.start('main');
         });
 
     }

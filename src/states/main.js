@@ -9,6 +9,7 @@ const PLAYING = 0;
 const FLIP1 = 1;
 const FLIP2 = 2;
 const VICTORY = 3;
+const TUTORIAL = 4;
 
 export class MainState extends Phaser.State {
 
@@ -49,6 +50,12 @@ export class MainState extends Phaser.State {
 		game.world.bringToTop(g);
 		g.sort('py', Phaser.Group.SORT_ASCENDING);
 
+		if (game.tutorial) {
+			this.state = TUTORIAL;
+			this.tutorial1 = game.add.text(30, 30, 'As a pirate, drop anchor \nto uncover treasure!', {font: 'normal 30px sans-serif', fill: '#000'});
+			this.tutorial2 = game.add.text(800, 250, 'As the haunted treasure, keep \nmoving to stay buried and blend \nin with the local wildlife!', {font: 'normal 30px sans-serif', fill: '#000'});
+		}
+
 		this.greenOnTop = true;
 		let greenDrop = game.input.keyboard.addKey(Phaser.KeyCode.QUESTION_MARK);
 		greenDrop.onDown.add(function() {
@@ -74,6 +81,38 @@ export class MainState extends Phaser.State {
 			game.timer += dt / 40;
 			if (game.timer > 0.85) {
 				this.state = VICTORY;
+				let victoryText = '';
+				if (this.greenOnTop) {
+					victoryText = 'Captain Cholla wins!';
+				} else {
+					victoryText = 'Captain Jojoba wins!';
+				}
+				let victory1 = game.add.text(game.width/2, game.height/2, victoryText, {
+					font: 'normal 40px sans-serif', 
+					fill: '#000'
+				});
+				victory1.anchor.set(0.5);
+
+				let victory2 = game.add.text(game.width/2, game.height/2 + 100, 'Play again', {
+					font: 'normal 40px sans-serif',
+					fill: '#000'
+				});
+				victory2.anchor.set(0.5);
+				victory2.inputEnabled = true;
+				victory2.events.onInputDown.add(function() {
+					game.tutorial = false;
+					game.state.restart();
+				});
+
+				let victory3 = game.add.text(game.width/2, game.height/2 + 150, 'Main manu', {
+					font: 'normal 40px sans-serif',
+					fill: '#000'
+				});
+				victory3.anchor.set(0.5);
+				victory3.inputEnabled = true;
+				victory3.events.onInputDown.add(function() {
+					game.state.start('title');
+				});
 			}
 		}
 		
@@ -99,7 +138,7 @@ export class MainState extends Phaser.State {
 			this.group.rotation = -Math.PI/2;
 			this.group2.rotation = -Math.PI/2;
 			
-			game.timer = 1 - game.timer;
+			game.timer = 0.85 - game.timer;
 
 			// random new position for player
 			let angleToCenter = Math.random()*2*Math.PI;
@@ -124,6 +163,19 @@ export class MainState extends Phaser.State {
 			this.anchor.keys = this.hider.keys;
 			this.hider.keys = temp;
 
+			if (game.tutorial) {
+				if (this.tutorial1.y > 125) {
+					this.tutorial1.text = '';
+					this.tutorial2.text = '';
+				} else {
+					this.tutorial1.y = 150;
+					this.tutorial1.text = 'If the treasure if caught, \nyour roles are reversed!';
+					this.tutorial2.x = 900;
+					this.tutorial2.y = 150;
+					this.tutorial2.text = 'If the sands of time run \nout, the treasure wins!';
+				}
+			}
+
 			this.state = FLIP2;
 			game.sfx.whoosh.play();
 		}
@@ -139,11 +191,15 @@ export class MainState extends Phaser.State {
 	}
 
 	onAnchorLand() {
+		this.anchor.foundSomething = false;
 		let distance = Math.sqrt(Math.pow(this.anchor.px - this.hider.px, 2) + Math.pow(this.anchor.py - this.hider.py, 2));
 		game.sfx.hit_ground.play();
 		if (distance < 100) {
+			this.anchor.foundSomething = true;
+			this.anchor.whatIFound.loadTexture('chest');
 			this.spawnClock = 10000;
 			this.hider.state = FOUND;
+			this.hider.frame = 19;
 			game.time.events.add(1000, function() {
 				this.anchor.shadow.on = false;
 				this.state = FLIP1;
@@ -153,7 +209,7 @@ export class MainState extends Phaser.State {
 			for (let w of this.wanders.getAll()) {
 				let distance = Math.sqrt(Math.pow(this.anchor.px - w.px, 2) + Math.pow(this.anchor.py - w.py, 2));
 				if(distance < 100){
-
+					this.anchor.foundSomething = true;
 				}
 			}
 			game.time.events.add(1000, function() {

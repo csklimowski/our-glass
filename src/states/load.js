@@ -4,7 +4,7 @@ export class LoadState extends Phaser.State {
     preload() {
         game.load.image('sand-particle', 'img/sand-particle.png');
         game.load.image('cactus', 'img/cactus.png');
-        game.load.image('chest', 'img/chest.png');
+        game.load.image('chest', 'img/sprites/chest.png');
         game.load.image('anchor', 'img/sprites/anchor.png');
         game.load.image('light-sand-particle', 'img/light-sand-particle.png');
         game.load.spritesheet('swayblue', 'img/sprites/swayblue.png', 150, 150);
@@ -26,11 +26,11 @@ export class LoadState extends Phaser.State {
         game.state.start('title');
 
         game.sfx = {
-            hit_chest: game.add.sound('hit_chest'),
-            hit_glass: game.add.sound('hit_glass'),
-            hit_ground: game.add.sound('hit_ground'),
-            bury: game.add.sound('bury_chest'),
-            fall: game.add.sound('anchor_fall'),
+            hit_chest: game.add.sound('hit_chest', 0.2),
+            hit_glass: game.add.sound('hit_glass', 1),
+            hit_ground: game.add.sound('hit_ground', 1),
+            bury: game.add.sound('bury_chest', 1),
+            fall: game.add.sound('anchor_fall', 1),
             whoosh: game.add.sound('whoosh', 2)
         };
     }

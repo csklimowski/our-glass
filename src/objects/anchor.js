@@ -35,6 +35,11 @@ export class Anchor extends Phaser.Sprite {
         lizard.anchor.set(0.93, 1.05);
         this.addChild(lizard);
         this.lizard = lizard;
+
+        this.foundSomething = false;
+        this.whatIFound = game.add.sprite(0, 0);
+        this.whatIFound.anchor.set(0.5);
+        this.addChild(this.whatIFound);
         
         this.x  = 0; // position to draw
         this.y  = 0; 
@@ -144,7 +149,16 @@ export class Anchor extends Phaser.Sprite {
         // dropping/rising behavior
         if (this.state == DROPPED) {
             this.altitude = sandPos(game.timer);
+            if (this.foundSomething) {
+                this.whatIFound.y = Math.max(this.whatIFound.y - 200*dt, -120);
+                this.whatIFound.scale.x = Math.min(this.whatIFound.scale.x + dt, 0.6);
+                this.whatIFound.scale.y = Math.min(this.whatIFound.scale.y + dt, 0.6);
+            }
+        } else {
+            this.whatIFound.y = 0;
+            this.whatIFound.scale.set(0);
         }
+
         if (this.state == RISING) {
             this.altitude = Math.max(this.altitude - 500*dt, 200)
             if (this.altitude == 200) {
