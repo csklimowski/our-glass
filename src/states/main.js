@@ -117,6 +117,7 @@ export class MainState extends Phaser.State {
 			this.hider.keys = temp;
 
 			this.state = FLIP2;
+			game.sfx.whoosh.play();
 		}
 
 		if (this.state == FLIP2 && this.group.rotation >= 0) {
@@ -131,6 +132,7 @@ export class MainState extends Phaser.State {
 
 	onAnchorLand() {
 		let distance = Math.sqrt(Math.pow(this.anchor.px - this.hider.px, 2) + Math.pow(this.anchor.py - this.hider.py, 2));
+		game.sfx.hit_ground.play();
 		if (distance < 100) {
 			this.spawnClock = 10000;
 			this.hider.state = FOUND;
@@ -138,6 +140,7 @@ export class MainState extends Phaser.State {
 				this.anchor.shadow.on = false;
 				this.state = FLIP1;
 			}, this);
+			game.sfx.hit_chest.play();
 		} else {
 			game.time.events.add(1000, function() {
 				this.anchor.state = RISING;
