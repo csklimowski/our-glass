@@ -35,13 +35,14 @@ export class MainState extends Phaser.State {
 		g.add(wander);
 		this.group = g;
 
+		
 		this.wanders = game.add.group();
 		this.wanders.add(wander);
-
+		
 		g.pivot.set(game.width/2, 1.5*game.height);
 		g.x = game.width/2;
 		g.y = 1.5*game.height;
-
+		
 		this.cacti = [ new Cactus(0.5) , new Cactus(0.65) , new Cactus(0.8) ];
 		this.spawnClock = Math.random();
 		for(let i = 0; i < 3; i++) {
@@ -49,11 +50,19 @@ export class MainState extends Phaser.State {
 		}
 		game.world.bringToTop(g);
 		g.sort('py', Phaser.Group.SORT_ASCENDING);
-
+		
+		
+		this.hourglass = game.add.sprite(game.width/2, 1.24*game.height, 'hourglass');
+		this.hourglass.anchor.set(0.5);
+		this.hourglass.scale.set(1.4);
 		if (game.tutorial) {
 			this.state = TUTORIAL;
-			this.tutorial1 = game.add.text(30, 30, 'As a pirate, drop anchor \nto uncover treasure!', {font: 'normal 30px sans-serif', fill: '#000'});
-			this.tutorial2 = game.add.text(800, 250, 'As the haunted treasure, keep \nmoving to stay buried and blend \nin with the local wildlife!', {font: 'normal 30px sans-serif', fill: '#000'});
+			this.tutorial1 = game.add.text(120, 30, 'As a pirate, drop anchor \nto uncover treasure!', {
+				font: 'normal 30px sans-serif', fill: '#000'
+			});
+			this.tutorial2 = game.add.text(700, 250, 'As the haunted treasure, keep \nmoving to stay buried and blend \nin with the local wildlife!', {
+				font: 'normal 30px sans-serif', fill: '#000'
+			});
 		}
 
 		this.greenOnTop = true;
@@ -130,6 +139,7 @@ export class MainState extends Phaser.State {
 		this.group.sort('py', Phaser.Group.SORT_ASCENDING);
 
 		if (this.state == FLIP1 || this.state == FLIP2) {
+			this.hourglass.rotation += Math.PI*dt;
 			this.group.rotation += Math.PI*dt;
 			this.group2.rotation += Math.PI*dt;
 		}
@@ -137,6 +147,7 @@ export class MainState extends Phaser.State {
 		if (this.state == FLIP1 && this.group.rotation > Math.PI/2) {
 			this.group.rotation = -Math.PI/2;
 			this.group2.rotation = -Math.PI/2;
+			this.hourglass.rotation = -Math.PI/2;
 			
 			game.timer = 0.85 - game.timer;
 
@@ -170,7 +181,7 @@ export class MainState extends Phaser.State {
 				} else {
 					this.tutorial1.y = 150;
 					this.tutorial1.text = 'If the treasure if caught, \nyour roles are reversed!';
-					this.tutorial2.x = 900;
+					this.tutorial2.x = 800;
 					this.tutorial2.y = 150;
 					this.tutorial2.text = 'If the sands of time run \nout, the treasure wins!';
 				}
@@ -187,6 +198,7 @@ export class MainState extends Phaser.State {
 			this.spawnClock = Math.random();
 			this.group.rotation = 0;
 			this.group2.rotation = 0;
+			this.hourglass.rotation = 0;
 		}
 	}
 
