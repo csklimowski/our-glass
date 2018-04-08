@@ -176,12 +176,14 @@ export class Anchor extends Phaser.Sprite {
 
         if (this.state == DROPPING) {
             this.altitude = Math.min(this.altitude + 1500*dt, sandPos(game.timer));
-            if (this.altitude == sandPos(game.timer)) {
-                if (distFromCenter < glassWidth(game.timer)) {
+            if (distFromCenter < glassWidth(game.timer)) {
+                if (this.altitude == sandPos(game.timer)) {
                     this.exploder.start(true, 800, null, 20);
                     this.state = DROPPED;
                     this.onAnchorLand.call(this.onAnchorLandContext);
-                } else {
+                } 
+            } else {
+                if (this.y > 300 && glassWidth((this.y - 350)/400) < Math.abs(this.x - game.width/2)) {
                     game.sfx.hit_glass.play();
                     this.state = RISING;
                 }
