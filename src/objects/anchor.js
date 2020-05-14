@@ -18,7 +18,7 @@ export class Anchor extends Phaser.Sprite {
         game.add.existing(this);
 
         let particles = game.add.emitter();
-		particles.makeParticles('sand-particle2');
+		particles.makeParticles('sand-particle');
 		particles.width = 60;
 		particles.height = 10;
 		particles.minParticleScale = 0.5;

@@ -6,7 +6,7 @@ export const FOUND = 1;
 
 export class Hider extends Phaser.Sprite {
     constructor() {
-        super(game, 0, 0, 'outofsand', 19);
+        super(game, 0, 0, 'chest-bury', 19);
         game.add.existing(this);
 
         this.x  = 0; // position to draw
@@ -30,7 +30,7 @@ export class Hider extends Phaser.Sprite {
         this.anchor.set(0.5);
 
         let particles = game.add.emitter();
-		particles.makeParticles('sand-particle2');
+		particles.makeParticles('sand-particle');
 		particles.width = 15;
 		particles.height = 5;
 		particles.minParticleScale = 0.5;

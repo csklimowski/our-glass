@@ -8,27 +8,38 @@ export class LoadState extends Phaser.State {
         game.scale.windowConstraints.bottom = 'layout';
         game.scale.pageAlignHorizontally = true;
         game.scale.pageAlignVertically = true;
-        
 
         game.load.image('sand-particle', 'img/sand-particle.png');
-        game.load.image('sand-particle2', 'img/sand-particle2.png');
-        game.load.image('chest', 'img/sprites/chest.png');
-        game.load.image('anchor', 'img/sprites/anchor.png');
-        game.load.image('light-sand-particle', 'img/light-sand-particle.png');
-        game.load.image('hourglass', 'img/sprites/hourglass.png');
-        game.load.image('grad5', 'img/sprites/gradient5.png');
-        game.load.image('grad1', 'img/sprites/gradient1.png');
-        game.load.image('grad2', 'img/sprites/gradient2.png');
-        game.load.image('grad3', 'img/sprites/gradient3.png');
-        game.load.spritesheet('swayblue', 'img/sprites/swayblue.png', 150, 150);
-        game.load.spritesheet('sway', 'img/sprites/sway.png', 150, 150);
-        game.load.spritesheet('cactus_dance', 'img/sprites/cactus_dance.png', 140, 150);
-        game.load.spritesheet('cactus_fall', 'img/sprites/cactus_fall.png', 128, 149);
-        game.load.spritesheet('outofsand', 'img/sprites/outofsand.png', 150, 150);
-        game.load.spritesheet('bug', 'img/sprites/bug.png', 120, 120);
-        game.load.spritesheet('left', 'img/sprites/titleleft.png', 231, 355);
-        game.load.spritesheet('right', 'img/sprites/titleright.png', 231, 355);
-        game.load.spritesheet('middle', 'img/sprites/titlemid.png', 211, 186);
+        game.load.image('chest', 'img/chest.png');
+        game.load.image('anchor', 'img/anchor.png');
+        game.load.image('hourglass', 'img/hourglass.png');
+        game.load.image('game-bg', 'img/game-bg.png');
+        game.load.image('title-bg', 'img/title-bg.png');
+        game.load.image('logo', 'img/logo.png');
+        game.load.image('press-to-start', 'img/press-to-start.png');
+        game.load.image('player1', 'img/player1.png');
+        game.load.image('player2', 'img/player2.png');
+        game.load.image('press', 'img/press.png');
+        game.load.image('ready', 'img/ready.png');
+
+        game.load.spritesheet('w', 'img/w.png', 80, 74);
+        game.load.spritesheet('a', 'img/a.png', 80, 74);
+        game.load.spritesheet('s', 'img/s.png', 80, 74);
+        game.load.spritesheet('d', 'img/d.png', 80, 74);
+        game.load.spritesheet('i', 'img/i.png', 80, 74);
+        game.load.spritesheet('j', 'img/j.png', 80, 74);
+        game.load.spritesheet('k', 'img/k.png', 80, 74);
+        game.load.spritesheet('l', 'img/l.png', 80, 74);
+
+        game.load.spritesheet('sway', 'img/sway-green.png', 150, 150);
+        game.load.spritesheet('swayblue', 'img/sway-blue.png', 150, 150);
+        game.load.spritesheet('cactus-dance', 'img/cactus-dance.png', 140, 150);
+        game.load.spritesheet('cactus-fall', 'img/cactus-fall.png', 128, 149);
+        game.load.spritesheet('chest-bury', 'img/chest-bury.png', 150, 150);
+        game.load.spritesheet('bug', 'img/bug.png', 120, 120);
+        game.load.spritesheet('left', 'img/title-left.png', 231, 355);
+        game.load.spritesheet('right', 'img/title-right.png', 231, 355);
+
         game.load.audio('hit_chest','audio/anchor_hit_chest.ogg');
         game.load.audio('hit_glass','audio/anchor_hit_glass.ogg');
         game.load.audio('hit_ground','audio/anchor_hit_ground.ogg');
