@@ -5,6 +5,7 @@ export const FLYING = 0;
 export const DROPPING = 1;
 export const DROPPED = 2;
 export const RISING = 3;
+export const LOWERING = 4;
 
 export class Anchor extends Phaser.Sprite {
     constructor(onAnchorLand, onAnchorLandContext) {
@@ -29,9 +30,9 @@ export class Anchor extends Phaser.Sprite {
         this.exploder = particles;
         this.addChild(particles);
         
-        let lizard = game.add.sprite(0, 0, 'sway');
-        lizard.animations.add('sway', _.range(60), 30, true);
-        lizard.animations.play('sway');
+        let lizard = game.add.sprite(0, 0, 'swayblue');
+        lizard.animations.add('swayblue', _.range(60), 30, true);
+        lizard.animations.play('swayblue');
         lizard.anchor.set(0.93, 1.05);
         this.addChild(lizard);
         this.lizard = lizard;
@@ -73,10 +74,10 @@ export class Anchor extends Phaser.Sprite {
         this.anchor.set(0.5, 1);
 
         this.keys = {
-            up: game.input.keyboard.addKey(Phaser.KeyCode.UP),
-            left: game.input.keyboard.addKey(Phaser.KeyCode.LEFT),
-            down: game.input.keyboard.addKey(Phaser.KeyCode.DOWN),
-            right: game.input.keyboard.addKey(Phaser.KeyCode.RIGHT)
+            up: game.input.keyboard.addKey(Phaser.KeyCode.I),
+            left: game.input.keyboard.addKey(Phaser.KeyCode.J),
+            down: game.input.keyboard.addKey(Phaser.KeyCode.K),
+            right: game.input.keyboard.addKey(Phaser.KeyCode.L)
         };
     }
 
@@ -168,7 +169,14 @@ export class Anchor extends Phaser.Sprite {
         }
 
         if (this.state == RISING) {
-            this.altitude = Math.max(this.altitude - 500*dt, 200)
+            this.altitude = Math.max(this.altitude - 500*dt, 200);
+            if (this.altitude == 200) {
+                this.state = FLYING;
+            }
+        }
+
+        if (this.state == LOWERING) {
+            this.altitude = Math.min(this.altitude + 300*dt, 200);
             if (this.altitude == 200) {
                 this.state = FLYING;
             }
@@ -177,13 +185,15 @@ export class Anchor extends Phaser.Sprite {
         if (this.state == DROPPING) {
             this.altitude = Math.min(this.altitude + 1500*dt, sandPos(game.timer));
             if (distFromCenter < glassWidth(game.timer)) {
-                if (this.altitude == sandPos(game.timer)) {
+                if (this.altitude >= sandPos(game.timer)) {
                     this.exploder.start(true, 800, null, 20);
                     this.state = DROPPED;
                     this.onAnchorLand.call(this.onAnchorLandContext);
                 } 
             } else {
-                if (this.y > 300 && glassWidth((this.y - 350)/400) < Math.abs(this.x - game.width/2)) {
+                if (this.altitude >= sandPos(game.timer) || (
+                    this.y > 300 &&glassWidth((this.y - 350)/400) < Math.abs(this.x - game.width/2))
+                ) {
                     game.sfx.hit_glass.play();
                     this.state = RISING;
                 }

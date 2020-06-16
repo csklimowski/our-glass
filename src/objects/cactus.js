@@ -15,7 +15,7 @@ export class Cactus extends Phaser.Sprite {
         this.anchor.set(0.75, .9);
 
         this.angleToCenter = Math.random()*2*Math.PI;
-        this.p = Math.random()*0.9;
+        this.p = Math.random()*0.7;
         let distFromCenter = this.p*glassWidth(game.timer);
         this.py = Math.sin(this.angleToCenter)*distFromCenter;
         this.px = Math.cos(this.angleToCenter)*distFromCenter;

@@ -1,6 +1,6 @@
 import game from '../game';
 import { ControlledHider, WanderingHider, MOVING, FOUND } from '../objects/hider';
-import { Anchor, DROPPING, DROPPED, FLYING, RISING } from '../objects/anchor';
+import { Anchor, DROPPING, DROPPED, LOWERING, FLYING, RISING } from '../objects/anchor';
 import { Sand } from '../objects/sand';
 import { Cactus } from '../objects/cactus';
 import { glassWidth, glassHeight, sandPos } from '../util/math';
@@ -11,15 +11,23 @@ const FLIP2 = 2;
 const VICTORY = 3;
 const TUTORIAL = 4;
 
+const TREASURE = 0;
+const ANCHOR = 1;
+const SWITCH = 2;
+const FINISHED = 3;
+
 export class MainState extends Phaser.State {
 
 	create() {
 		game.sfx.title.pause();
         game.stage.backgroundColor = 0x55aaee;
 		game.timer = 0.3;
-		this.state = PLAYING;
+		this.totalTime = 0;
 
-		game.add.image(0, 0, 'grad5');
+		this.state = PLAYING;
+		this.tutorialState = TREASURE;
+
+		game.add.image(0, 0, 'game-bg');
 
 		this.group2 = game.add.group();
 		this.sand = new Sand();
@@ -45,7 +53,7 @@ export class MainState extends Phaser.State {
 			this.hider.px = Math.cos(angleToCenter)*distFromCenter;
 		}
 
-		
+
 		this.wanders = game.add.group();
 		this.wanders.add(wander);
 		
@@ -58,34 +66,41 @@ export class MainState extends Phaser.State {
 		for(let i = 0; i < 3; i++) {
 			g.add(this.cacti[i]);
 		}
-		game.world.bringToTop(g);
-		g.sort('py', Phaser.Group.SORT_ASCENDING);
-		
 		
 		this.hourglass = game.add.sprite(game.width/2, 1.24*game.height, 'hourglass');
 		this.hourglass.anchor.set(0.5);
 		this.hourglass.scale.set(1.4);
+		
+		this.tutorialStuff = game.add.group();
 		if (game.tutorial) {
 			this.state = TUTORIAL;
-			this.tutorial1 = game.add.text(120, 30, 'As a pirate, drop anchor \nto uncover treasure!', {
-				font: 'normal 30px sans-serif', fill: '#000'
-			});
-			this.tutorial2 = game.add.text(700, 250, 'As the haunted treasure, keep \nmoving to stay buried and blend \nin with the local wildlife!', {
-				font: 'normal 30px sans-serif', fill: '#000'
-			});
+			this.tutorial1 = game.add.image(640, -200, 'tutorial-1');
+			this.tutorial1.anchor.set(0.5);
+			this.tutorial1.dy = 180;
+			this.tutorial2 = game.add.image(640, 920, 'tutorial-2');
+			this.tutorial2.anchor.set(0.5);
+			this.tutorial2.dy = 920;
+			this.tutorial3 = game.add.image(-600, 360, 'tutorial-3');
+			this.tutorial3.anchor.set(0.5); 
+			this.tutorial3.dx = -600;
+			this.tutorialStuff.add(this.tutorial1);
+			this.tutorialStuff.add(this.tutorial2);
+			this.tutorialStuff.add(this.tutorial3);			
+			this.anchor.shadow.on = false;
+			this.anchor.altitude = -200;
+			game.timer = 0.4;
 		}
 
-		this.greenOnTop = true;
-		let greenDrop = game.input.keyboard.addKey(Phaser.KeyCode.QUESTION_MARK);
-		greenDrop.onDown.add(function() {
-			if (this.greenOnTop && this.anchor.state == FLYING && this.state != VICTORY) {
+		this.greenOnTop = false;
+
+		let drop = game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
+		drop.onDown.add(function() {
+			if (this.state == TUTORIAL && this.tutorialState == TREASURE) return;
+			if (this.anchor.state == FLYING && this.state != VICTORY) {
 				this.anchor.state = DROPPING;
-			}
-		}, this);
-		let blueDrop = game.input.keyboard.addKey(Phaser.KeyCode.Q);
-		blueDrop.onDown.add(function() {
-			if (!this.greenOnTop && this.anchor.state == FLYING && this.state != VICTORY) {
-				this.anchor.state = DROPPING;
+				if (this.tutorialState == ANCHOR) {
+					this.tutorial2.dy = 920;
+				}
 			}
 		}, this);
 
@@ -96,45 +111,43 @@ export class MainState extends Phaser.State {
 	update() {
 		let dt = game.time.elapsedMS / 1000;
 
+		this.totalTime += dt;
+
 		if (this.state == VICTORY) {
 			game.timer = Math.min(game.timer + dt, 2);
 		}
 		if (this.state == PLAYING) {
-			game.timer += dt / 40;
+			game.timer += (dt / 40) + (this.totalTime / 150000);
 			if (game.timer > 0.85) {
 				this.state = VICTORY;
-				let victoryText = '';
-				if (this.greenOnTop) {
-					victoryText = 'Captain Cholla wins!';
-				} else {
-					victoryText = 'Captain Jojoba wins!';
-				}
-				let victory1 = game.add.text(game.width/2, game.height/2, victoryText, {
-					font: 'normal 40px sans-serif', 
-					fill: '#000'
-				});
-				victory1.anchor.set(0.5);
+				this.anchor.state = RISING;
 
-				let victory2 = game.add.text(game.width/2, game.height/2 + 100, 'Play again', {
-					font: 'normal 40px sans-serif',
-					fill: '#000'
-				});
-				victory2.anchor.set(0.5);
-				victory2.inputEnabled = true;
-				victory2.events.onInputDown.add(function() {
+				if (game.tutorial) {
 					game.tutorial = false;
-					game.state.restart();
-				});
+					localStorage.setItem('our_glass_data', JSON.stringify({
+						tutorial: false
+					}));
+				}
 
-				let victory3 = game.add.text(game.width/2, game.height/2 + 150, 'Main manu', {
-					font: 'normal 40px sans-serif',
-					fill: '#000'
-				});
-				victory3.anchor.set(0.5);
-				victory3.inputEnabled = true;
-				victory3.events.onInputDown.add(function() {
-					game.state.start('title');
-				});
+				let victoryText = game.add.image(370, 250, 'winner');
+				this.tutorialStuff.add(victoryText);
+				if (this.greenOnTop) {
+					victoryText.frame = 1;
+				} else {
+					victoryText.frame = 0;
+				}
+
+				let playAgain = game.add.image(460, 400, 'play-again');
+				playAgain.inputEnabled = true;
+				playAgain.events.onInputOver.add(function() {
+					playAgain.frame = 1;
+				}, this);
+				playAgain.events.onInputOut.add(function() {
+					playAgain.frame = 0;
+				}, this);
+				playAgain.events.onInputDown.add(function() {
+					game.state.restart();
+				}, this);
 			}
 		}
 		
@@ -148,8 +161,8 @@ export class MainState extends Phaser.State {
 		}
 
 		game.world.bringToTop(g)
+		game.world.bringToTop(this.tutorialStuff);
 		g.sort('py', Phaser.Group.SORT_ASCENDING);
-		this.group.sort('py', Phaser.Group.SORT_ASCENDING);
 
 		if (this.state == FLIP1 || this.state == FLIP2) {
 			this.hourglass.rotation += Math.PI*dt;
@@ -185,33 +198,25 @@ export class MainState extends Phaser.State {
 
 			let temp = this.anchor.keys;
 			this.anchor.keys = this.hider.keys;
-			this.hider.keys = temp;
-
-			if (game.tutorial) {
-				if (this.tutorial1.y > 125) {
-					this.tutorial1.text = '';
-					this.tutorial2.text = '';
-				} else {
-					this.tutorial1.y = 150;
-					this.tutorial1.text = 'If the treasure if caught, \nyour roles are reversed!';
-					this.tutorial2.x = 800;
-					this.tutorial2.y = 150;
-					this.tutorial2.text = 'If the sands of time run \nout, the treasure wins!';
-				}
-			}
+			this.hider.keys = temp;	
 
 			this.state = FLIP2;
 			game.sfx.whoosh.play();
 			if(this.greenOnTop) {
-				game.sfx.orange.fadeOut(1000);
-				game.sfx.purple.fadeIn(1000, true);
-			} else if(!this.greenOnTop) {
 				game.sfx.purple.fadeOut(1000);
 				game.sfx.orange.fadeIn(1000, true);
+			} else {
+				game.sfx.orange.fadeOut(1000);
+				game.sfx.purple.fadeIn(1000, true);
 			}
 		}
 
 		if (this.state == FLIP2 && this.group.rotation >= 0) {
+			if (this.tutorialState == ANCHOR) {
+				this.tutorial3.dx = 640;
+				this.tutorialState = SWITCH;
+				this.totalTime = 0;
+			}
 			this.state = PLAYING;
 			this.hider.state = MOVING;
 			this.anchor.shadow.on = true;
@@ -224,6 +229,26 @@ export class MainState extends Phaser.State {
 			} else {
 				game.sfx.cholla_voice.play();
 			}
+		}
+
+		if (game.tutorial) {
+			if (this.tutorialState == TREASURE) {
+				if (this.totalTime > 15) {
+					this.tutorialState = ANCHOR;
+					this.tutorial2.dy = 550;
+					this.tutorial1.dy = -200;
+					this.anchor.state = LOWERING;
+					this.anchor.shadow.on = true;
+				}
+			}
+			if (this.tutorialState == ANCHOR) {
+				if (this.totalTime > 25) {
+					this.tutorial2.dy = 920;
+				}
+			}
+			this.tutorial1.y += 0.1*(this.tutorial1.dy - this.tutorial1.y);
+			this.tutorial2.y += 0.1*(this.tutorial2.dy - this.tutorial2.y);
+			this.tutorial3.x += 0.1*(this.tutorial3.dx - this.tutorial3.x);
 		}
 	}
 
@@ -239,9 +264,15 @@ export class MainState extends Phaser.State {
 			this.hider.state = FOUND;
 			this.hider.frame = 19;
 			game.time.events.add(1000, function() {
-				this.anchor.shadow.on = false;
-				this.state = FLIP1;
+				if (this.state != VICTORY) {
+					this.anchor.shadow.on = false;
+					this.state = FLIP1;
+				}
 			}, this);
+			if (this.tutorialState == SWITCH) {
+				this.tutorial3.dx = -600;
+				this.tutorialState = FINISHED;
+			}
 			game.sfx.hit_chest.play();
 		} else {
 			this.wanders.forEach(function(w) {

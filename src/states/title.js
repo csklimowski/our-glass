@@ -4,14 +4,12 @@ export class TitleState extends Phaser.State{
     create() {
         game.add.image(0, 0, 'title-bg');
 
-        this.left = game.add.sprite(170, 500, 'left');
+        this.left = game.add.sprite(350, 500, 'left');
         this.left.anchor.set(0.5);
-        this.left.dx = 170;
         this.left.animations.add('left', _.range(60), 30, true);
         this.left.animations.play('left');
 
-        this.right = game.add.sprite(game.width - 170, 500, 'right');
-        this.right.dx = game.width - 170;
+        this.right = game.add.sprite(game.width - 350, 500, 'right');
         this.right.anchor.set(0.5);
         this.right.animations.add('right', _.range(60), 30, true);
         this.right.animations.play('right');
@@ -20,10 +18,23 @@ export class TitleState extends Phaser.State{
         this.logo.anchor.set(0.5);
         this.logo.dy = 150;
 
-        this.center = game.add.image(game.width/2, 500, 'press-to-start');
+        this.center = game.add.image(game.width/2, 500, 'play');
         this.center.anchor.set(0.5);
         this.center.dy = 500;
-
+        this.center.inputEnabled = true;
+        this.center.events.onInputOver.add(function() {
+            this.center.frame = 1;
+        }, this);
+        this.center.events.onInputOut.add(function() {
+            this.center.frame = 0;
+        }, this);
+        this.center.events.onInputDown.add(function() {
+            this.logo.dy = -200;
+            this.leftStart.dx = 350;
+            this.rightStart.dx = game.width-350;
+            this.center.dy = 900;
+            this.center.frame = 0;
+        }, this);
 
         this.player1 = game.add.image(0, 0, 'player1');
         this.player1.anchor.set(0.5);
@@ -68,15 +79,6 @@ export class TitleState extends Phaser.State{
         this.rightStart.add(this.l);
 
         game.sfx.title.play('', 0, 1, true);
-
-        game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR).onDown.add(function() {
-            this.left.dx = 350;
-            this.right.dx = game.width-350;
-            this.center.dy = 900;
-            this.logo.dy = -200;
-            this.leftStart.dx = 350;
-            this.rightStart.dx = game.width-350;
-        }, this);
 
         game.input.keyboard.addKey(Phaser.KeyCode.W).onDown.add(function() {
             this.pressedLetter.call(this, ['w'])
@@ -141,8 +143,6 @@ export class TitleState extends Phaser.State{
 
         this.logo.y += 3*(this.logo.dy - this.logo.y)*dt + Math.cos(game.time.time/500);
         this.center.y += 3*(this.center.dy - this.center.y)*dt;
-        this.left.x += 3*(this.left.dx - this.left.x)*dt;
-        this.right.x += 3*(this.right.dx - this.right.x)*dt;
         this.leftStart.x += 3*(this.leftStart.dx - this.leftStart.x)*dt;
         this.rightStart.x += 3*(this.rightStart.dx - this.rightStart.x)*dt;
     }

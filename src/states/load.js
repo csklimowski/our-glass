@@ -16,11 +16,14 @@ export class LoadState extends Phaser.State {
         game.load.image('game-bg', 'img/game-bg.png');
         game.load.image('title-bg', 'img/title-bg.png');
         game.load.image('logo', 'img/logo.png');
-        game.load.image('press-to-start', 'img/press-to-start.png');
         game.load.image('player1', 'img/player1.png');
         game.load.image('player2', 'img/player2.png');
         game.load.image('press', 'img/press.png');
         game.load.image('ready', 'img/ready.png');
+        game.load.image('tutorial-1', 'img/tutorial-1.png');
+        game.load.image('tutorial-2', 'img/tutorial-2.png');
+        game.load.image('tutorial-3', 'img/tutorial-3.png');
+        
 
         game.load.spritesheet('w', 'img/w.png', 80, 74);
         game.load.spritesheet('a', 'img/a.png', 80, 74);
@@ -30,6 +33,9 @@ export class LoadState extends Phaser.State {
         game.load.spritesheet('j', 'img/j.png', 80, 74);
         game.load.spritesheet('k', 'img/k.png', 80, 74);
         game.load.spritesheet('l', 'img/l.png', 80, 74);
+        game.load.spritesheet('play', 'img/play.png', 140, 76);
+        game.load.spritesheet('play-again', 'img/play-again.png', 326, 76);
+        game.load.spritesheet('winner', 'img/winner.png', 502, 60);
 
         game.load.spritesheet('sway', 'img/sway-green.png', 150, 150);
         game.load.spritesheet('swayblue', 'img/sway-blue.png', 150, 150);
@@ -55,6 +61,16 @@ export class LoadState extends Phaser.State {
     }
 
     create() {
+        let data = localStorage.getItem('our_glass_data');
+        if (false) {
+            data = JSON.parse(data);
+        } else {
+            data = {tutorial: true};
+            localStorage.setItem('our_glass_data', JSON.stringify(data))
+        }
+
+        game.tutorial = data.tutorial;
+
         game.sfx = {
             hit_chest: game.add.sound('hit_chest', 0.2),
             hit_glass: game.add.sound('hit_glass', 1),

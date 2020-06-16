@@ -62,7 +62,7 @@ export class Hider extends Phaser.Sprite {
         this.px += this.vx*dt;
         this.py += this.vy*dt;
         // boundaries
-        let sandRadius = glassWidth(game.timer);
+        let sandRadius = glassWidth(game.timer)*0.9;
         let distFromCenter = Math.sqrt(this.px*this.px + this.py*this.py);
         if (distFromCenter > sandRadius) {
             let angleToCenter = Math.atan2(this.py, this.px);
@@ -75,6 +75,7 @@ export class Hider extends Phaser.Sprite {
         // update particle position
         this.particles.x = this.x;
         this.particles.y = sandPos(game.timer) + this.py*0.25;
+
     }
 }
 
@@ -141,7 +142,7 @@ export class ControlledHider extends Hider {
 
         this.animations.add('appear', _.range(14, 20).reverse(), 20, false);
         this.animations.add('disappear', _.range(14, 20), 20, false);
-        this.animations.add('bury', [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0].concat(_.range(20)), 30, false);
+        this.animations.add('bury', [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0].concat(_.range(20)), 30, false);
         if (game.tutorial) {
             this.animations.play('bury');
         }
