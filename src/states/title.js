@@ -8,33 +8,58 @@ export class TitleState extends Phaser.State{
         this.left.anchor.set(0.5);
         this.left.animations.add('left', _.range(60), 30, true);
         this.left.animations.play('left');
+        this.left.dx = 350;
 
         this.right = game.add.sprite(game.width - 350, 500, 'right');
         this.right.anchor.set(0.5);
         this.right.animations.add('right', _.range(60), 30, true);
         this.right.animations.play('right');
+        this.right.dx = game.width-350;
 
         this.logo = game.add.image(game.width/2, 150, 'logo');
         this.logo.anchor.set(0.5);
         this.logo.dy = 150;
 
-        this.center = game.add.image(game.width/2, 500, 'play');
-        this.center.anchor.set(0.5);
-        this.center.dy = 500;
-        this.center.inputEnabled = true;
-        this.center.events.onInputOver.add(function() {
-            this.center.frame = 1;
-        }, this);
-        this.center.events.onInputOut.add(function() {
-            this.center.frame = 0;
-        }, this);
-        this.center.events.onInputDown.add(function() {
+        this.credits = game.add.button(game.width/2, 560, 'credits', function() {
+            this.left.dx = 200;
+            this.right.dx = game.width-200;
+
+            this.play.dy -= 720;
+            this.logo.dy -= 720;
+            this.credits.dy -= 720;
+            this.createdBy.dy -= 720;
+            this.back.dy -= 720;
+        }, this, 1, 0);
+        this.credits.dy = 560;
+        this.credits.anchor.set(0.5);
+
+        this.play = game.add.button(game.width/2, 450, 'play', function() {
             this.logo.dy = -200;
             this.leftStart.dx = 350;
             this.rightStart.dx = game.width-350;
-            this.center.dy = 900;
-            this.center.frame = 0;
-        }, this);
+            this.play.dy = 900;
+            this.credits.dy = 1010;
+            this.play.frame = 0;
+            
+        }, this, 1, 0);
+        this.play.dy = 450;
+        this.play.anchor.set(0.5);
+
+        this.back = game.add.button(game.width/2, 1350, 'back', function() {
+            this.left.dx = 350;
+            this.right.dx = game.width - 350;
+            this.play.dy += 720;
+            this.logo.dy += 720;
+            this.credits.dy += 720;
+            this.createdBy.dy += 720;
+            this.back.dy += 720;
+        }, this, 1, 0);
+        this.back.dy = 1350,
+        this.back.anchor.set(0.5);
+
+        this.createdBy = game.add.image(game.width/2, 1000, 'created-by');
+        this.createdBy.anchor.set(0.5);
+        this.createdBy.dy = 1000;
 
         this.player1 = game.add.image(0, 0, 'player1');
         this.player1.anchor.set(0.5);
@@ -142,8 +167,13 @@ export class TitleState extends Phaser.State{
         
 
         this.logo.y += 3*(this.logo.dy - this.logo.y)*dt + Math.cos(game.time.time/500);
-        this.center.y += 3*(this.center.dy - this.center.y)*dt;
+        this.play.y += 3*(this.play.dy - this.play.y)*dt;
+        this.credits.y += 3*(this.credits.dy - this.credits.y)*dt;
         this.leftStart.x += 3*(this.leftStart.dx - this.leftStart.x)*dt;
         this.rightStart.x += 3*(this.rightStart.dx - this.rightStart.x)*dt;
+        this.left.x += 3*(this.left.dx - this.left.x)*dt;
+        this.right.x += 3*(this.right.dx - this.right.x)*dt;
+        this.back.y += 3*(this.back.dy - this.back.y)*dt;
+        this.createdBy.y += 3*(this.createdBy.dy - this.createdBy.y)*dt;
     }
 }

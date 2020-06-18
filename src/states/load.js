@@ -23,7 +23,7 @@ export class LoadState extends Phaser.State {
         game.load.image('tutorial-1', 'img/tutorial-1.png');
         game.load.image('tutorial-2', 'img/tutorial-2.png');
         game.load.image('tutorial-3', 'img/tutorial-3.png');
-        
+        game.load.image('created-by', 'img/created-by.png');
 
         game.load.spritesheet('w', 'img/w.png', 80, 74);
         game.load.spritesheet('a', 'img/a.png', 80, 74);
@@ -34,8 +34,10 @@ export class LoadState extends Phaser.State {
         game.load.spritesheet('k', 'img/k.png', 80, 74);
         game.load.spritesheet('l', 'img/l.png', 80, 74);
         game.load.spritesheet('play', 'img/play.png', 140, 76);
-        game.load.spritesheet('play-again', 'img/play-again.png', 326, 76);
-        game.load.spritesheet('winner', 'img/winner.png', 502, 60);
+        game.load.spritesheet('credits', 'img/credits.png', 211, 59);
+        game.load.spritesheet('back', 'img/back.png', 152, 60);
+        game.load.spritesheet('play-again', 'img/play-again.png', 326, 77);
+        game.load.spritesheet('winner', 'img/winner.png', 502, 59);
 
         game.load.spritesheet('sway', 'img/sway-green.png', 150, 150);
         game.load.spritesheet('swayblue', 'img/sway-blue.png', 150, 150);
