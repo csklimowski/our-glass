@@ -123,7 +123,7 @@ export class MainState extends Phaser.State {
 				this.anchor.state = RISING;
 
 				if (game.tutorial) {
-					game.tutorial = false;
+					this.tutorial3.dx = -600;
 					localStorage.setItem('our_glass_data', JSON.stringify({
 						tutorial: false
 					}));
@@ -137,17 +137,10 @@ export class MainState extends Phaser.State {
 					victoryText.frame = 0;
 				}
 
-				let playAgain = game.add.image(460, 400, 'play-again');
-				playAgain.inputEnabled = true;
-				playAgain.events.onInputOver.add(function() {
-					playAgain.frame = 1;
-				}, this);
-				playAgain.events.onInputOut.add(function() {
-					playAgain.frame = 0;
-				}, this);
-				playAgain.events.onInputDown.add(function() {
+				game.add.button(460, 400, 'play-again', function() {
+					game.tutorial = false;
 					game.state.restart();
-				}, this);
+				}, this, 1, 0);
 			}
 		}
 		
