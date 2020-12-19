@@ -31,8 +31,8 @@ export class Anchor extends Phaser.Sprite {
         this.addChild(particles);
         
         let lizard = game.add.sprite(0, 0, 'swayblue');
-        lizard.animations.add('swayblue', _.range(60), 30, true);
-        lizard.animations.play('swayblue');
+        lizard.animations.add('sway', _.range(60), 30, true);
+        lizard.animations.play('sway');
         lizard.anchor.set(0.93, 1.05);
         this.addChild(lizard);
         this.lizard = lizard;

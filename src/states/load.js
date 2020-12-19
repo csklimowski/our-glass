@@ -64,7 +64,7 @@ export class LoadState extends Phaser.State {
 
     create() {
         let data = localStorage.getItem('our_glass_data');
-        if (false) {
+        if (data) {
             data = JSON.parse(data);
         } else {
             data = {tutorial: true};

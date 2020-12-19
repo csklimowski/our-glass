@@ -18,7 +18,7 @@ gulp.task('build', function() {
 			presets: ['es2015']
 		}))
 		.pipe(uglify())
-		.pipe(gulp.dest('dist'));
+		.pipe(gulp.dest('js'));
 });
 
 gulp.task('bundle', function() {
